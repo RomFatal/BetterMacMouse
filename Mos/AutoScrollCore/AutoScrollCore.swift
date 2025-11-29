@@ -31,8 +31,8 @@ class AutoScrollCore {
     // 计时器
     var scrollTimer: Timer?
 
-    // 自定义光标
-    var customCursor: NSCursor?
+    // 覆盖窗口（显示固定图标）
+    var overlay: AutoScrollOverlay?
 
     // MARK: - 设置（独立于常规滚动设置）
 
@@ -131,18 +131,15 @@ class AutoScrollCore {
         originPoint = point
         isActive = true
 
-        // 隐藏系统光标并显示自定义光标
-        NSCursor.hide()
-        if customCursor == nil {
-            customCursor = AutoScrollCursor.create()
+        // 创建并显示固定图标覆盖层
+        if overlay == nil {
+            overlay = AutoScrollOverlay()
         }
-        customCursor?.set()
+        overlay?.show(at: point)
 
         // 启动滚动计时器（每10ms触发一次）
         scrollTimer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] _ in
             self?.performScroll()
-            // 强制设置光标以防止系统覆盖
-            self?.customCursor?.set()
         }
 
         // 添加到主运行循环
@@ -159,8 +156,8 @@ class AutoScrollCore {
         scrollTimer?.invalidate()
         scrollTimer = nil
 
-        // 恢复系统光标
-        NSCursor.unhide()
+        // 隐藏覆盖层
+        overlay?.hide()
 
         // 重置状态
         isActive = false
@@ -179,6 +176,15 @@ class AutoScrollCore {
 
         // 计算与原点的垂直距离
         let deltaY = current.y - origin.y
+        let deltaX = current.x - origin.x
+
+        // 计算总距离（使用勾股定理）
+        let totalDistance = sqrt(deltaX * deltaX + deltaY * deltaY)
+
+        // 必须至少移动10像素才开始滚动
+        if totalDistance < 10.0 {
+            return // 鼠标还在原点附近，不滚动
+        }
 
         // 死区处理
         let effectiveDistance = abs(deltaY) - deadZone
@@ -186,8 +192,8 @@ class AutoScrollCore {
             return // 在死区内，不滚动
         }
 
-        // 计算滚动方向（1 = 向上，-1 = 向下）
-        let direction: CGFloat = deltaY > 0 ? -1.0 : 1.0
+        // 计算滚动方向（1 = 向下，-1 = 向上）- 反转以匹配自然滚动
+        let direction: CGFloat = deltaY > 0 ? 1.0 : -1.0
 
         // 二次加速：滚动速度随距离增加而加速
         let acceleration = pow(effectiveDistance / 50.0, 2.0)

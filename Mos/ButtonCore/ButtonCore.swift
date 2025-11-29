@@ -35,7 +35,18 @@ class ButtonCore {
     // MARK: - 按钮事件处理
     let buttonEventCallBack: CGEventTapCallBack = { (proxy, type, event, refcon) in
         let buttonNumber = event.getIntegerValueField(.mouseEventButtonNumber)
-        let location = event.location
+        let cgLocation = event.location
+
+        // 转换CGEvent坐标到NSScreen坐标
+        // CGEvent: Y=0在屏幕顶部，向下递增
+        // NSScreen: Y=0在主屏幕底部，向上递增
+        func convertToScreenCoordinates(_ cgPoint: CGPoint) -> CGPoint {
+            guard let mainScreen = NSScreen.main else { return cgPoint }
+            let screenHeight = mainScreen.frame.height
+            return CGPoint(x: cgPoint.x, y: screenHeight - cgPoint.y)
+        }
+
+        let location = convertToScreenCoordinates(cgLocation)
 
         // 处理自动滚动相关事件
         if buttonNumber == Options.shared.autoScroll.activationButton {

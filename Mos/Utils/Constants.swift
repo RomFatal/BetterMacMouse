@@ -200,4 +200,7 @@ class OPTIONS_AUTOSCROLL_DEFAULT {
     var appExceptions: [String] = [] {
         didSet {Options.shared.saveOptions()}
     }
+    var darkMode = false { // 深色模式（黑色图标+白色背景）
+        didSet {Options.shared.saveOptions()}
+    }
 }

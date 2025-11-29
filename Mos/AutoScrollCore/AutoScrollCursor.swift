@@ -12,7 +12,7 @@ class AutoScrollCursor {
 
     /// 创建带有上下箭头的自定义光标
     static func create() -> NSCursor {
-        let size = CGSize(width: 32, height: 32)
+        let size = CGSize(width: 48, height: 48)
         let image = NSImage(size: size)
 
         image.lockFocus()
@@ -21,40 +21,51 @@ class AutoScrollCursor {
         NSColor.clear.set()
         NSRect(x: 0, y: 0, width: size.width, height: size.height).fill()
 
-        // 绘制蓝色圆圈（中心指示器）
-        NSColor.systemBlue.withAlphaComponent(0.6).setFill()
-        let circleRect = NSRect(x: 8, y: 8, width: 16, height: 16)
-        NSBezierPath(ovalIn: circleRect).fill()
-
-        // 设置白色描边用于箭头
+        // 绘制蓝色圆圈（中心指示器）- 更大更明显
+        NSColor.systemBlue.withAlphaComponent(0.8).setFill()
         NSColor.white.setStroke()
+        let circleRect = NSRect(x: 14, y: 14, width: 20, height: 20)
+        let circlePath = NSBezierPath(ovalIn: circleRect)
+        circlePath.lineWidth = 2
+        circlePath.fill()
+        circlePath.stroke()
 
-        // 绘制上箭头
+        // 设置白色填充和描边用于箭头
+        NSColor.white.setFill()
+        NSColor.systemBlue.setStroke()
+
+        // 绘制上箭头（更大更明显）
         let upArrow = NSBezierPath()
-        upArrow.move(to: NSPoint(x: 16, y: 4))
-        upArrow.line(to: NSPoint(x: 16, y: 6))
-        upArrow.move(to: NSPoint(x: 16, y: 4))
-        upArrow.line(to: NSPoint(x: 13, y: 7))
-        upArrow.move(to: NSPoint(x: 16, y: 4))
-        upArrow.line(to: NSPoint(x: 19, y: 7))
-        upArrow.lineWidth = 2
+        upArrow.move(to: NSPoint(x: 24, y: 6))
+        upArrow.line(to: NSPoint(x: 19, y: 11))
+        upArrow.line(to: NSPoint(x: 22, y: 11))
+        upArrow.line(to: NSPoint(x: 22, y: 13))
+        upArrow.line(to: NSPoint(x: 26, y: 13))
+        upArrow.line(to: NSPoint(x: 26, y: 11))
+        upArrow.line(to: NSPoint(x: 29, y: 11))
+        upArrow.close()
+        upArrow.lineWidth = 1.5
+        upArrow.fill()
         upArrow.stroke()
 
-        // 绘制下箭头
+        // 绘制下箭头（更大更明显）
         let downArrow = NSBezierPath()
-        downArrow.move(to: NSPoint(x: 16, y: 28))
-        downArrow.line(to: NSPoint(x: 16, y: 26))
-        downArrow.move(to: NSPoint(x: 16, y: 28))
-        downArrow.line(to: NSPoint(x: 13, y: 25))
-        downArrow.move(to: NSPoint(x: 16, y: 28))
-        downArrow.line(to: NSPoint(x: 19, y: 25))
-        downArrow.lineWidth = 2
+        downArrow.move(to: NSPoint(x: 24, y: 42))
+        downArrow.line(to: NSPoint(x: 19, y: 37))
+        downArrow.line(to: NSPoint(x: 22, y: 37))
+        downArrow.line(to: NSPoint(x: 22, y: 35))
+        downArrow.line(to: NSPoint(x: 26, y: 35))
+        downArrow.line(to: NSPoint(x: 26, y: 37))
+        downArrow.line(to: NSPoint(x: 29, y: 37))
+        downArrow.close()
+        downArrow.lineWidth = 1.5
+        downArrow.fill()
         downArrow.stroke()
 
         image.unlockFocus()
 
         // 创建光标，热点在中心
-        let hotSpot = NSPoint(x: 16, y: 16)
+        let hotSpot = NSPoint(x: 24, y: 24)
         return NSCursor(image: image, hotSpot: hotSpot)
     }
 
