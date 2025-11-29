@@ -219,6 +219,7 @@ class AutoScrollCore {
         }
 
         // 创建并发送滚动事件
+        // 使用特殊标志来标记这是自动滚动事件，避免被 ScrollCore 处理
         if let scrollEvent = CGEvent(
             scrollWheelEvent2Source: nil,
             units: .pixel,
@@ -227,7 +228,9 @@ class AutoScrollCore {
             wheel2: 0,
             wheel3: 0
         ) {
-            scrollEvent.flags = .maskNonCoalesced
+            // 使用 maskAlternate 标志来标记自动滚动事件
+            // ScrollCore 会检测到这个标志并直接放行，不做平滑处理
+            scrollEvent.flags = [.maskAlternate, .maskNonCoalesced]
             scrollEvent.post(tap: .cgSessionEventTap)
         }
     }

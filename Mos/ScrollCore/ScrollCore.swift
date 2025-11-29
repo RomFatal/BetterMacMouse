@@ -9,11 +9,11 @@
 import Cocoa
 
 class ScrollCore {
-    
+
     // 单例
     static let shared = ScrollCore()
     init() { NSLog("Module initialized: ScrollCore") }
-    
+
     // 执行状态
     var isActive = false
     // 热键数据
@@ -34,9 +34,15 @@ class ScrollCore {
     let scrollEventMask = CGEventMask(1 << CGEventType.scrollWheel.rawValue)
     let hotkeyEventMask = CGEventMask(1 << CGEventType.flagsChanged.rawValue)
     let mouseLeftEventMask = CGEventMask(1 << CGEventType.leftMouseDown.rawValue)
-    
+
     // MARK: - 滚动事件处理
     let scrollEventCallBack: CGEventTapCallBack = { (proxy, type, event, refcon) in
+        // 检查是否为自动滚动事件（带有 maskAlternate 标志）
+        // 如果是，直接放行，不做任何处理
+        if event.flags.contains(.maskAlternate) {
+            return Unmanaged.passUnretained(event)
+        }
+
         // 不处理触控板
         // 无法区分黑苹果, 因为黑苹果的触控板驱动直接模拟鼠标输入
         // 无法区分 Magic Mouse, 因为其滚动特征与内置的 Trackpad 一致
@@ -151,7 +157,7 @@ class ScrollCore {
             return Unmanaged.passUnretained(event)
         }
     }
-    
+
     // MARK: - 热键事件处理
     let hotkeyEventCallBack: CGEventTapCallBack = { (proxy, type, event, refcon) in
         let keyCode = event.keyCode
@@ -194,14 +200,14 @@ class ScrollCore {
         // 不返回原始事件
         return nil
     }
-    
+
     // MARK: - 鼠标事件处理
     let mouseLeftEventCallBack: CGEventTapCallBack = { (proxy, type, event, refcon) in
         // 如果点击左键则停止滚动
         ScrollPoster.shared.stop()
         return nil
     }
-    
+
     // MARK: - 事件运行管理
     // 启动
     func enable() {
