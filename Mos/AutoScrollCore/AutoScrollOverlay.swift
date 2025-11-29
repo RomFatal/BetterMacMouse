@@ -15,7 +15,34 @@ class AutoScrollOverlay {
 
     /// 在指定位置显示自动滚动图标
     func show(at point: CGPoint) {
-        NSLog("[AutoScrollOverlay] show(at: \(point))")
+        NSLog("[AutoScrollOverlay] ========== SHOW SVG ==========")
+        NSLog("[AutoScrollOverlay] Received point (NSScreen coords): (\(point.x), \(point.y))")
+
+        // CRITICAL: Always hide any existing window first to ensure clean state
+        if overlayWindow != nil {
+            NSLog("[AutoScrollOverlay] WARNING: overlayWindow exists! Hiding first...")
+            hide()
+        }
+
+        // Get current actual mouse position to compare
+        let actualMouse = NSEvent.mouseLocation
+        NSLog("[AutoScrollOverlay] Actual mouse position NOW: (\(actualMouse.x), \(actualMouse.y))")
+        NSLog("[AutoScrollOverlay] Difference: dx=\(actualMouse.x - point.x), dy=\(actualMouse.y - point.y)")
+
+        // Find which screen contains this point
+        var containingScreen: NSScreen?
+        for screen in NSScreen.screens {
+            if NSPointInRect(point, screen.frame) {
+                containingScreen = screen
+                NSLog("[AutoScrollOverlay] Point is on screen: \(screen.frame)")
+                break
+            }
+        }
+
+        if containingScreen == nil {
+            NSLog("[AutoScrollOverlay] WARNING: Point not in any screen! Using main screen")
+            containingScreen = NSScreen.main
+        }
 
         // 创建图标图像
         let iconSize: CGFloat = 32
@@ -25,24 +52,10 @@ class AutoScrollOverlay {
         imageView = NSImageView(frame: NSRect(x: 0, y: 0, width: iconSize, height: iconSize))
         imageView?.image = image
 
-        // 找到光标所在的屏幕
-        var targetScreen: NSScreen?
-        for screen in NSScreen.screens {
-            if NSMouseInRect(point, screen.frame, false) {
-                targetScreen = screen
-                break
-            }
-        }
-
-        if targetScreen == nil {
-            targetScreen = NSScreen.main
-        }
-
-        NSLog("[AutoScrollOverlay] Mouse point: \(point)")
-        NSLog("[AutoScrollOverlay] Target screen frame: \(targetScreen?.frame ?? .zero)")
-        NSLog("[AutoScrollOverlay] All screens: \(NSScreen.screens.map { $0.frame })")
-
-        // 窗口位置使用全局屏幕坐标（不需要转换）
+        // CRITICAL: NSEvent.mouseLocation and NSWindow coordinates use a global coordinate space
+        // where Y=0 is at the BOTTOM of the primary screen, and extends across all screens
+        // The point parameter should already be in this coordinate space
+        // Just center the icon on the point
         let windowRect = NSRect(
             x: point.x - iconSize / 2,
             y: point.y - iconSize / 2,
@@ -50,7 +63,8 @@ class AutoScrollOverlay {
             height: iconSize
         )
 
-        NSLog("[AutoScrollOverlay] windowRect: \(windowRect)")
+        NSLog("[AutoScrollOverlay] Requested windowRect: \(windowRect)")
+        NSLog("[AutoScrollOverlay] Window center will be: (\(windowRect.midX), \(windowRect.midY))")
 
         overlayWindow = NSWindow(
             contentRect: windowRect,
@@ -68,14 +82,59 @@ class AutoScrollOverlay {
         overlayWindow?.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
 
         overlayWindow?.orderFrontRegardless()
-        NSLog("[AutoScrollOverlay] Window shown: \(overlayWindow?.isVisible ?? false), screen: \(overlayWindow?.screen?.frame ?? .zero)")
+
+        // Verify the actual window position after creation
+        if let actualFrame = overlayWindow?.frame {
+            NSLog("[AutoScrollOverlay] Actual window frame: \(actualFrame)")
+            NSLog("[AutoScrollOverlay] Actual window center: (\(actualFrame.midX), \(actualFrame.midY))")
+            NSLog("[AutoScrollOverlay] Position difference from requested: dx=\(actualFrame.origin.x - windowRect.origin.x), dy=\(actualFrame.origin.y - windowRect.origin.y)")
+
+            // Write to file for easy checking
+            let timestamp = Date()
+            let screenInfo = containingScreen.map { "Screen: \($0.frame)" } ?? "Screen: UNKNOWN"
+            let log = """
+            ========== SVG POSITIONING @ \(timestamp) ==========
+            \(screenInfo)
+            Received point: (\(point.x), \(point.y))
+            Actual mouse NOW: (\(actualMouse.x), \(actualMouse.y))
+            Mouse difference: dx=\(actualMouse.x - point.x), dy=\(actualMouse.y - point.y)
+
+            Requested window: \(windowRect)
+            Actual window: \(actualFrame)
+            Window difference: dx=\(actualFrame.origin.x - windowRect.origin.x), dy=\(actualFrame.origin.y - windowRect.origin.y)
+
+            Center offset from mouse: dx=\(actualFrame.midX - actualMouse.x), dy=\(actualFrame.midY - actualMouse.y)
+
+            Point in windowRect: \(NSPointInRect(point, windowRect))
+            Mouse in actualFrame: \(NSPointInRect(actualMouse, actualFrame))
+            ====================================
+
+            """
+            // Append to file to track multiple clicks
+            if let handle = FileHandle(forWritingAtPath: "/tmp/mos_svg_position.txt") {
+                handle.seekToEndOfFile()
+                if let data = log.data(using: .utf8) {
+                    handle.write(data)
+                }
+                handle.closeFile()
+            } else {
+                try? log.write(toFile: "/tmp/mos_svg_position.txt", atomically: false, encoding: .utf8)
+            }
+        }
+        NSLog("[AutoScrollOverlay] Window shown: \(overlayWindow?.isVisible ?? false)")
+        NSLog("[AutoScrollOverlay] ========================================")
     }
 
     /// 隐藏覆盖窗口
     func hide() {
-        overlayWindow?.orderOut(nil)
+        NSLog("[AutoScrollOverlay] Hiding overlay, window exists: \(overlayWindow != nil)")
+        if let window = overlayWindow {
+            window.orderOut(nil)
+            // Don't call close() - just hide and release
+        }
         overlayWindow = nil
         imageView = nil
+        NSLog("[AutoScrollOverlay] Overlay hidden and cleared")
     }
 
     /// 创建自动滚动图标（基于SVG参考）

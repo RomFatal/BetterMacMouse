@@ -65,14 +65,40 @@ class AutoScrollCore {
     // MARK: - 事件处理
 
     /// 处理中键按下事件
-    func handleMiddleButtonDown(at point: CGPoint) {
-        guard isEnabled else { return }
+    /// 处理中键按下事件
+    /// - Returns: true if event should be consumed (in blocked area), false if should pass through
+    func handleMiddleButtonDown(at point: CGPoint) -> Bool {
+        let downLog = "=== DOWN at \(point) time=\(Date()) ===\n"
+        try? downLog.write(toFile: "/tmp/mos_down.txt", atomically: false, encoding: .utf8)
+
+        guard isEnabled else { return false }
+
+        // CRITICAL: Check immediately if we're in a blocked area
+        // This prevents Chrome's auto-scroll from even starting
+        let browserInfo = getBrowserWindowInfo(at: point)
+        let blockLog = "Browser: \(browserInfo.name ?? "none"), isUI: \(browserInfo.isInUIArea)\n"
+        if let data = blockLog.data(using: .utf8), let handle = FileHandle(forWritingAtPath: "/tmp/mos_down.txt") {
+            handle.seekToEndOfFile()
+            handle.write(data)
+            handle.closeFile()
+        }
+
+        if browserInfo.isInUIArea {
+            NSLog("[AutoScroll] Middle button DOWN in blocked area - consuming event")
+            let blockedLog = "BLOCKED - not setting middleButtonPressed\n"
+            try? blockedLog.write(toFile: "/tmp/mos_down_blocked.txt", atomically: false, encoding: .utf8)
+            return true  // Consume event to prevent Chrome's auto-scroll
+        }
 
         middleButtonPressed = true
         pressLocation = point
         pressTime = Date()
 
+        let allowedLog = "ALLOWED - middleButtonPressed=true\n"
+        try? allowedLog.write(toFile: "/tmp/mos_down_allowed.txt", atomically: false, encoding: .utf8)
+
         NSLog("[AutoScroll] Middle button pressed at (\(point.x), \(point.y))")
+        return false  // Let event pass through for now
     }
 
     /// 处理鼠标移动事件（用于拖动检测）
@@ -93,9 +119,23 @@ class AutoScrollCore {
     }
 
     /// 处理中键释放事件
-    func handleMiddleButtonUp(at point: CGPoint) {
-        guard isEnabled else { return }
-        guard middleButtonPressed, let pressLoc = pressLocation else { return }
+    /// - Returns: true if event was handled (activated OR blocked), false if event should pass through
+    func handleMiddleButtonUp(at point: CGPoint) -> Bool {
+        guard isEnabled else { return false }
+
+        // CRITICAL FIX: ALWAYS stop existing timer/active scroll on ANY middle-button UP
+        // Even if middleButtonPressed is false (blocked DOWN), we need to stop any existing scroll
+        if scrollTimer != nil || isActive {
+            NSLog("[AutoScroll] Middle button UP detected - stopping any existing auto-scroll")
+            stopAutoScroll()
+            middleButtonPressed = false
+            pressLocation = nil
+            return true  // Consumed - we stopped an existing scroll
+        }
+
+        guard middleButtonPressed, let pressLoc = pressLocation else { return false }
+
+        NSLog("[AutoScroll] handleMiddleButtonUp called, isActive=\(isActive)")
 
         // 计算点击期间的移动距离
         let dx = point.x - pressLoc.x
@@ -104,18 +144,93 @@ class AutoScrollCore {
 
         if distance <= dragThreshold {
             // 是点击而非拖动 - 切换自动滚动状态
-            if isActive {
-                NSLog("[AutoScroll] Stopping auto-scroll")
+            NSLog("[AutoScroll] Button click detected, isActive=\(isActive), timer exists=\(scrollTimer != nil)")
+
+            // ALWAYS stop timer if it exists, regardless of isActive state
+            if scrollTimer != nil {
+                NSLog("[AutoScroll] Timer exists! Force stopping...")
                 stopAutoScroll()
-            } else {
+            } else if isActive {
+                NSLog("[AutoScroll] isActive=true but no timer - stopping anyway")
+                stopAutoScroll()
+            } else if !isActive && scrollTimer == nil {
+                // Not active and no timer - safe to proceed with activation check
                 NSLog("[AutoScroll] ========== MIDDLE BUTTON CLICK at (\(point.x), \(point.y)) ==========")
-                
+                NSLog("[AutoScroll] isActive before check: \(isActive)")
+
                 // 检查是否应该激活自动滚动
-                if shouldActivateAutoScroll(at: point) {
+                let shouldActivate = shouldActivateAutoScroll(at: point)
+                NSLog("[AutoScroll] shouldActivateAutoScroll returned: \(shouldActivate)")
+
+                // Write to a debug file for easy checking
+                let debugInfo = """
+                ========== AUTO-SCROLL DEBUG ==========
+                Time: \(Date())
+                Click Position: (\(point.x), \(point.y))
+                Should Activate: \(shouldActivate)
+                isActive before: \(isActive)
+                =======================================
+
+                """
+                try? debugInfo.write(toFile: "/tmp/mos_autoscroll_debug.txt", atomically: false, encoding: .utf8)
+
+                if shouldActivate {
                     NSLog("[AutoScroll] ✅ Starting auto-scroll")
+
+                    // TRIPLE CHECK before actually starting
+                    let browserInfo = getBrowserWindowInfo(at: point)
+                    if browserInfo.isInUIArea {
+                        NSLog("[AutoScroll] ❌❌❌ ABORT: Triple-check detected UI area! NOT starting!")
+                        let abort = "ABORTED: UI area detected on triple-check at \(point) at \(Date())\n"
+                        try? abort.write(toFile: "/tmp/mos_ABORTED.txt", atomically: false, encoding: .utf8)
+                        return true  // Consume event to prevent Chrome's auto-scroll
+                    }
+
                     startAutoScroll(at: point)
                 } else {
                     NSLog("[AutoScroll] ❌ Auto-scroll blocked - not in scrollable area or in browser UI")
+                    NSLog("[AutoScroll] NOT calling startAutoScroll()")
+
+                    // Write detailed blocked info
+                    let blockedInfo = """
+
+                    ========== BLOCKED ==========
+                    Time: \(Date())
+                    Position: (\(point.x), \(point.y))
+                    Should Activate: FALSE
+
+                    BEFORE cleanup:
+                      isActive: \(isActive)
+                      timer exists: \(scrollTimer != nil)
+                      originPoint exists: \(originPoint != nil)
+                    =============================
+                    """
+                    try? blockedInfo.write(toFile: "/tmp/mos_autoscroll_debug.txt", atomically: false, encoding: .utf8)
+
+                    // CRITICAL: Force stop everything to prevent ghost scrolling
+                    NSLog("[AutoScroll] Force stopping any existing scroll state...")
+                    stopAutoScroll()
+
+                    // Extra safety: ensure timer is killed and state is cleared
+                    scrollTimer?.invalidate()
+                    scrollTimer = nil
+                    originPoint = nil
+                    currentPoint = nil
+                    isActive = false
+                    NSLog("[AutoScroll] State cleared: isActive=false, timer=nil, originPoint=nil")
+
+                    // Write after cleanup
+                    let afterInfo = """
+
+                    AFTER cleanup:
+                      isActive: \(isActive)
+                      timer exists: \(scrollTimer != nil)
+                      originPoint exists: \(originPoint != nil)
+                    =============================
+
+                    """
+                    try? afterInfo.write(toFile: "/tmp/mos_autoscroll_blocked.txt", atomically: false, encoding: .utf8)
+                    return true  // Consume event to prevent Chrome's auto-scroll
                 }
             }
         } else {
@@ -125,183 +240,334 @@ class AutoScrollCore {
         middleButtonPressed = false
         pressLocation = nil
         pressTime = nil
+        return false  // Let event pass through (drag or normal click)
     }
-    
+
     // MARK: - Scrollable Area Detection
-    
+
     /// 检查是否应该在给定位置激活自动滚动
     func shouldActivateAutoScroll(at point: CGPoint) -> Bool {
-        // 检查是否在浏览器UI区域（书签栏、标签栏等）
-        if isInBrowserUIArea(at: point) {
+        NSLog("[AutoScroll] ========== shouldActivateAutoScroll START ==========")
+        NSLog("[AutoScroll] Point: (\(point.x), \(point.y))")
+
+        // 先检查是否在浏览器窗口或其他应用
+        let browserInfo = getBrowserWindowInfo(at: point)
+
+        NSLog("[AutoScroll] BrowserInfo: isBrowser=\(browserInfo.isBrowser), name=\(browserInfo.name ?? "nil"), isInUIArea=\(browserInfo.isInUIArea)")
+
+        // 如果在任何应用的UI区域（标题栏、书签栏等），直接阻止
+        if browserInfo.isInUIArea {
+            NSLog("[AutoScroll] ❌ BLOCKED: In UI area")
+            NSLog("[AutoScroll] ========== shouldActivateAutoScroll END: false ==========")
             return false
         }
-        
-        // 检查是否有可滚动内容
-        return hasScrollableContent(at: point)
+
+        // 浏览器使用严格模式，其他应用使用宽松模式
+        let strictMode = browserInfo.isBrowser
+        NSLog("[AutoScroll] StrictMode: \(strictMode)")
+
+        let hasScrollable = hasScrollableContent(at: point, strictMode: strictMode)
+        NSLog("[AutoScroll] hasScrollableContent: \(hasScrollable)")
+        NSLog("[AutoScroll] ========== shouldActivateAutoScroll END: \(hasScrollable) ==========")
+
+        return hasScrollable
     }
-    
-    /// 检查点击位置是否在浏览器UI区域（书签栏、标签栏、地址栏）
-    func isInBrowserUIArea(at point: CGPoint) -> Bool {
+
+    // MARK: - Browser Detection
+
+    /// 浏览器窗口信息
+    struct BrowserWindowInfo {
+        let isBrowser: Bool
+        let name: String?
+        let isInUIArea: Bool
+    }
+
+    /// 获取浏览器窗口信息
+    func getBrowserWindowInfo(at point: CGPoint) -> BrowserWindowInfo {
+        var logText = "\n=== getBrowserWindowInfo at \(point) ===\n"
+
+        // Convert NSScreen coordinates (Y=0 at bottom) to CGWindow coordinates (Y=0 at top)
+        let cgPoint: CGPoint
+        if let mainScreen = NSScreen.main {
+            cgPoint = CGPoint(x: point.x, y: mainScreen.frame.height - point.y)
+            logText += "Screen height: \(mainScreen.frame.height)\n"
+            logText += "NSScreen: (\(point.x), \(point.y)) -> CGWindow: (\(cgPoint.x), \(cgPoint.y))\n"
+            NSLog("[AutoScroll] Coordinate conversion: NSScreen(\(point.x), \(point.y)) -> CGWindow(\(cgPoint.x), \(cgPoint.y))")
+        } else {
+            cgPoint = point
+            logText += "WARNING: No main screen!\n"
+        }
+
         let windowList = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: Any]]
-        
-        guard let windows = windowList else { return false }
-        
+
+        guard let windows = windowList else {
+            logText += "ERROR: No window list!\n"
+            try? logText.write(toFile: "/tmp/mos_window_detect.txt", atomically: false, encoding: .utf8)
+            return BrowserWindowInfo(isBrowser: false, name: nil, isInUIArea: false)
+        }
+
+        logText += "Total windows: \(windows.count)\n\n"
+        NSLog("[AutoScroll] Checking \(windows.count) windows...")
+
         // 找到点击位置的窗口
-        for window in windows {
+        for (index, window) in windows.enumerated() {
             guard let bounds = window[kCGWindowBounds as String] as? [String: CGFloat],
                   let x = bounds["X"], let y = bounds["Y"],
-                  let width = bounds["Width"], let height = bounds["Height"],
-                  point.x >= x && point.x <= x + width &&
-                  point.y >= y && point.y <= y + height else {
+                  let width = bounds["Width"], let height = bounds["Height"] else {
                 continue
             }
-            
-            // 检查是否是浏览器窗口
-            if let ownerName = window[kCGWindowOwnerName as String] as? String,
-               (ownerName.contains("Chrome") || ownerName.contains("Chromium") || 
-                ownerName.contains("Safari") || ownerName.contains("Firefox") || 
-                ownerName.contains("Edge") || ownerName.contains("Brave") || 
-                ownerName.contains("Opera") || ownerName.contains("Arc")) {
-                
-                let relativeY = point.y - y
-                
-                NSLog("[AutoScroll] Browser: \(ownerName), Relative Y: \(relativeY)px")
-                
-                // 浏览器UI区域：
-                // - 标签栏: 0-40px
-                // - 地址栏: 40-90px
-                // - 书签栏（如果显示）: 90-125px
-                // - 扩展图标区域: 可能延伸到140px
-                // 使用动态计算：顶部300px或窗口高度的25%（取较小值）
-                let uiHeight = min(300.0, height * 0.25)
-                
-                if relativeY < uiHeight {
-                    NSLog("[AutoScroll] ❌ In browser UI area (top \(relativeY)px < \(uiHeight)px)")
-                    return true
-                }
-                
-                // 也检查底部区域（状态栏、下载栏）
-                if relativeY > height - 50 {
-                    NSLog("[AutoScroll] ❌ In browser bottom UI area")
-                    return true
+
+            let ownerName = window[kCGWindowOwnerName as String] as? String ?? "unknown"
+            let windowName = window[kCGWindowName as String] as? String ?? "no name"
+
+            if index < 10 { // Log first 10 windows to file
+                logText += "Window \(index): \(ownerName)\n"
+                logText += "  Name: \(windowName)\n"
+                logText += "  Bounds: x=\(x), y=\(y), w=\(width), h=\(height)\n"
+
+                // Check if point is in bounds
+                let inBounds = cgPoint.x >= x && cgPoint.x <= x + width && cgPoint.y >= y && cgPoint.y <= y + height
+                logText += "  Point in bounds: \(inBounds)\n\n"
+
+                NSLog("[AutoScroll] Window \(index): \(ownerName) - \(windowName), bounds=(\(x),\(y),\(width),\(height))")
+            }
+
+            // Check if point is in this window
+            if cgPoint.x >= x && cgPoint.x <= x + width &&
+               cgPoint.y >= y && cgPoint.y <= y + height {
+
+                logText += "\n✓✓✓ FOUND WINDOW AT POINT ✓✓✓\n"
+                logText += "Window: \(ownerName)\n"
+                logText += "Point: (\(cgPoint.x), \(cgPoint.y))\n"
+                logText += "Bounds: (\(x), \(y), \(width), \(height))\n\n"
+
+                NSLog("[AutoScroll] ✓ Found window at point: \(ownerName)")
+
+                // 检查是否是浏览器窗口 - 使用更精确的匹配
+            let browserChecks = [
+                ("Google Chrome", ownerName == "Google Chrome" || ownerName == "Chrome" || ownerName.contains("Chrome")),
+                ("Chromium", ownerName == "Chromium"),
+                ("Safari", ownerName == "Safari"),
+                ("Firefox", ownerName == "Firefox" || ownerName.contains("Firefox")),
+                ("Microsoft Edge", ownerName.contains("Edge")),  // Matches "Edge", "Edge Dev", "Edge Beta", etc.
+                ("Brave Browser", ownerName.contains("Brave")),
+                ("Opera", ownerName == "Opera"),
+                ("Arc", ownerName == "Arc"),
+                ("Vivaldi", ownerName == "Vivaldi")
+            ]
+
+            var isBrowserWindow = false
+            var browserName = ""
+
+            for (name, matches) in browserChecks {
+                if matches {
+                    isBrowserWindow = true
+                    browserName = name
+                    break
                 }
             }
-            
-            break
-        }
-        
-        return false
+
+            let relativeY = cgPoint.y - y
+
+            if isBrowserWindow {
+                // 浏览器UI：更大的固定高度阻止
+                // 顶部250px（标签栏~40px + 地址栏~50px + 书签栏~40px + 扩展区域~30px + 额外缓冲~90px）
+                // 底部50px（状态栏、下载栏）
+                let topUIHeight: CGFloat = 250.0
+                let bottomUIHeight: CGFloat = 50.0
+                let isInUI = relativeY < topUIHeight || relativeY > height - bottomUIHeight
+
+                NSLog("[AutoScroll] ✓ Browser: \(browserName), WindowHeight: \(height)px, Y: \(relativeY)px, TopUI: \(topUIHeight)px, inUI: \(isInUI)")
+
+                logText += "Browser detected: \(browserName)\n"
+                logText += "relativeY: \(relativeY), topUI: \(topUIHeight), isInUI: \(isInUI)\n"
+                try? logText.write(toFile: "/tmp/mos_window_detect.txt", atomically: false, encoding: .utf8)
+
+                return BrowserWindowInfo(isBrowser: true, name: browserName, isInUIArea: isInUI)
+            } else {
+                // 非浏览器应用：阻止顶部区域（标题栏、工具栏）
+                // 固定120px（标题栏~40px + 工具栏~80px）
+                let uiHeight: CGFloat = 120.0
+                if relativeY < uiHeight {
+                    NSLog("[AutoScroll] ✓ Non-browser: \(ownerName), in UI area (Y: \(relativeY)px < \(uiHeight)px)")
+
+                    logText += "Non-browser: \(ownerName)\n"
+                    logText += "relativeY: \(relativeY), uiHeight: \(uiHeight), isInUI: true\n"
+                    try? logText.write(toFile: "/tmp/mos_window_detect.txt", atomically: false, encoding: .utf8)
+
+                    return BrowserWindowInfo(isBrowser: false, name: ownerName, isInUIArea: true)
+                }
+            }
+
+                break  // Found the window at point
+            }  // End of point-in-window check
+        }  // End of for loop
+
+        logText += "\nNO WINDOW FOUND AT POINT!\n"
+        try? logText.write(toFile: "/tmp/mos_window_detect.txt", atomically: false, encoding: .utf8)
+
+        return BrowserWindowInfo(isBrowser: false, name: nil, isInUIArea: false)
     }
-    
+
     /// 检查点击位置是否有可滚动内容
-    func hasScrollableContent(at point: CGPoint) -> Bool {
+    /// - Parameters:
+    ///   - point: 点击位置
+    ///   - strictMode: 严格模式（用于浏览器），宽松模式（用于其他应用）
+    func hasScrollableContent(at point: CGPoint, strictMode: Bool) -> Bool {
         // 转换为macOS坐标系（Y轴从下往上）
         guard let screen = NSScreen.main else {
             NSLog("[AutoScroll] ⚠️ Cannot get main screen")
-            return false
+            return !strictMode // 严格模式返回false，宽松模式返回true
         }
-        
+
         let screenHeight = screen.frame.height
         let axPoint = CGPoint(x: point.x, y: screenHeight - point.y)
-        
+
         // 获取点击位置的可访问性元素
         guard let element = getElementAtPoint(axPoint) else {
             NSLog("[AutoScroll] ⚠️ No accessibility element at point")
-            return false
+            return !strictMode // 严格模式返回false，宽松模式返回true
         }
-        
+
         // 检查元素及其父元素链
         var current: AXUIElement? = element
         var depth = 0
         let maxDepth = 15
-        
+        var foundAnyScrollableHint = false
+        var foundBlockingElement = false
+
         while let elem = current, depth < maxDepth {
             let role = getRole(of: elem)
             let hasScrollBars = hasScrollBars(elem)
-            
+
             NSLog("[AutoScroll] Level \(depth): Role=\(role ?? "nil"), HasScrollBars=\(hasScrollBars)")
-            
+
+            // 如果找到滚动条，标记为可能可滚动
+            if hasScrollBars {
+                foundAnyScrollableHint = true
+            }
+
             // 检查是否是可滚动的元素类型
             if let r = role {
-                // Web内容区域
-                if r == kAXScrollAreaRole as String || 
-                   r == "AXWebArea" || 
+                // 可滚动区域 - 立即返回true
+                if r == kAXScrollAreaRole as String ||
+                   r == "AXWebArea" ||
                    r == kAXTextAreaRole as String ||
-                   r == "AXGroup" && hasScrollBars {
+                   r == "AXGroup" && hasScrollBars ||
+                   r == "AXSplitGroup" || // VS Code使用分割组
+                   r == "AXList" && hasScrollBars || // 列表如果有滚动条
+                   r == "AXTable" && hasScrollBars || // 表格如果有滚动条
+                   r == "AXOutline" && hasScrollBars { // 大纲视图如果有滚动条
                     NSLog("[AutoScroll] ✅ Found scrollable element: \(r)")
                     return true
                 }
-                
+
                 // 明确的非滚动UI元素
                 if r == kAXButtonRole as String ||
                    r == kAXToolbarRole as String ||
                    r == "AXTabGroup" ||
                    r == kAXRadioButtonRole as String ||
                    r == "AXLink" ||
-                   r == kAXImageRole as String ||
+                   r == "AXStaticText" || // 标题栏文本
+                   r == "AXImage" || // 书签图标、标签页图标
                    r == kAXMenuRole as String ||
-                   r == "AXTextField" {
-                    NSLog("[AutoScroll] ❌ Found UI element (non-scrollable): \(r)")
-                    return false
+                   r == kAXMenuItemRole as String ||
+                   r == "AXPopUpButton" { // 下拉按钮
+                    NSLog("[AutoScroll] ❌ Found blocking UI element: \(r)")
+                    foundBlockingElement = true
+                    // 继续检查，可能父元素是可滚动的
                 }
             }
-            
+
             // 尝试获取父元素
             current = getParentElement(of: elem)
             depth += 1
         }
-        
-        NSLog("[AutoScroll] ⚠️ No scrollable content found after checking \(depth) levels")
+
+        // 如果找到滚动条，允许激活
+        if foundAnyScrollableHint {
+            NSLog("[AutoScroll] ✅ Found scroll bars in hierarchy, allowing")
+            return true
+        }
+
+        // 严格模式：必须找到明确的可滚动内容
+        if strictMode {
+            // 如果找到阻止元素，拒绝
+            if foundBlockingElement {
+                NSLog("[AutoScroll] ❌ Strict mode: found blocking UI element, no scrollable content")
+                return false
+            }
+            // 没找到明确的可滚动内容，拒绝
+            NSLog("[AutoScroll] ❌ Strict mode: no scrollable content found")
+            return false
+        }
+
+        // 宽松模式：如果找到阻止元素，拒绝
+        if foundBlockingElement {
+            NSLog("[AutoScroll] ❌ Permissive mode: found blocking UI element")
+            return false
+        }
+
+        // 宽松模式：即使没找到明确的scrollArea，但如果遍历了足够的层级且没有UI元素，
+        // 说明在内容区域（VS Code编辑器等），允许激活
+        // 这是因为某些应用的accessibility信息不完整
+        if depth >= 8 {
+            NSLog("[AutoScroll] ✅ Permissive mode: deep hierarchy (\(depth) levels), no UI elements, allowing")
+            return true
+        }
+
+        // 层级较浅且没找到scrollable内容，可能在非内容区域
+        NSLog("[AutoScroll] ❌ Permissive mode: shallow hierarchy (\(depth) < 8), no scrollable content")
         return false
     }
-    
+
     // MARK: - Accessibility Helpers
-    
+
     /// 获取指定点的可访问性元素
     func getElementAtPoint(_ point: CGPoint) -> AXUIElement? {
         let systemWideElement = AXUIElementCreateSystemWide()
         var element: AXUIElement?
-        
+
         let result = AXUIElementCopyElementAtPosition(systemWideElement, Float(point.x), Float(point.y), &element)
-        
+
         if result == .success {
             return element
         }
         return nil
     }
-    
+
     /// 获取元素的角色
     func getRole(of element: AXUIElement) -> String? {
         var value: AnyObject?
         let result = AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &value)
-        
+
         if result == .success, let role = value as? String {
             return role
         }
         return nil
     }
-    
+
     /// 获取父元素
     func getParentElement(of element: AXUIElement) -> AXUIElement? {
         var value: AnyObject?
         let result = AXUIElementCopyAttributeValue(element, kAXParentAttribute as CFString, &value)
-        
+
         if result == .success {
             return (value as! AXUIElement)
         }
         return nil
     }
-    
+
     /// 检查元素是否有滚动条
     func hasScrollBars(_ element: AXUIElement) -> Bool {
         // 检查垂直滚动条
         var verticalScrollBar: AnyObject?
         let vResult = AXUIElementCopyAttributeValue(element, "AXVerticalScrollBar" as CFString, &verticalScrollBar)
-        
+
         // 检查水平滚动条
         var horizontalScrollBar: AnyObject?
         let hResult = AXUIElementCopyAttributeValue(element, "AXHorizontalScrollBar" as CFString, &horizontalScrollBar)
-        
+
         return vResult == .success || hResult == .success
     }
 
@@ -309,6 +575,22 @@ class AutoScrollCore {
 
     /// 启动自动滚动
     func startAutoScroll(at point: CGPoint) {
+        NSLog("[AutoScroll] ========== startAutoScroll CALLED at (\(point.x), \(point.y)) ==========")
+        NSLog("[AutoScroll] This should ONLY be called in scrollable areas!")
+
+        // RE-CHECK: Verify we should actually start
+        let recheck = shouldActivateAutoScroll(at: point)
+        if !recheck {
+            NSLog("[AutoScroll] ❌❌❌ CRITICAL: startAutoScroll called but recheck=FALSE! Aborting!")
+            let criticalError = "CRITICAL BUG: startAutoScroll called at \(point) but shouldActivate=false at \(Date())\n"
+            try? criticalError.write(toFile: "/tmp/mos_CRITICAL_BUG.txt", atomically: false, encoding: .utf8)
+            return
+        }
+
+        // Write to debug
+        let startInfo = "startAutoScroll called at \(point) at \(Date())\n"
+        try? startInfo.write(toFile: "/tmp/mos_start_called.txt", atomically: false, encoding: .utf8)
+
         // 停止任何现有的滚动
         stopAutoScroll()
 
@@ -337,8 +619,40 @@ class AutoScrollCore {
 
     /// 停止自动滚动
     func stopAutoScroll() {
+        NSLog("[AutoScroll] stopAutoScroll called, isActive=\(isActive), timer exists=\(scrollTimer != nil)")
+
+        // Log who called us
+        let stackTrace = Thread.callStackSymbols.joined(separator: "\n")
+        let stopLog = """
+        ========== stopAutoScroll CALLED ==========
+        Time: \(Date())
+        isActive: \(isActive)
+        timer exists: \(scrollTimer != nil)
+        originPoint: \(originPoint != nil)
+
+        Call stack:
+        \(stackTrace)
+        ===========================================
+
+        """
+        if let handle = FileHandle(forWritingAtPath: "/tmp/mos_stop_calls.txt") {
+            handle.seekToEndOfFile()
+            if let data = stopLog.data(using: .utf8) {
+                handle.write(data)
+            }
+            handle.closeFile()
+        } else {
+            try? stopLog.write(toFile: "/tmp/mos_stop_calls.txt", atomically: false, encoding: .utf8)
+        }
+
         // 停止计时器
-        scrollTimer?.invalidate()
+        if let timer = scrollTimer {
+            NSLog("[AutoScroll] Invalidating timer...")
+            timer.invalidate()
+            NSLog("[AutoScroll] Timer invalidated, isValid=\(timer.isValid)")
+        } else {
+            NSLog("[AutoScroll] No timer to stop")
+        }
         scrollTimer = nil
 
         // 隐藏覆盖层
@@ -349,15 +663,61 @@ class AutoScrollCore {
         originPoint = nil
         currentPoint = nil
 
-        NSLog("[AutoScroll] Auto-scroll stopped")
+        NSLog("[AutoScroll] Auto-scroll stopped - all state cleared")
     }
 
     /// 执行滚动（由计时器调用）
     func performScroll() {
-        guard let origin = originPoint else { return }
+        // Write to debug file every time this is called
+        let performInfo = "performScroll called at \(Date()), isActive=\(isActive), timer=\(scrollTimer != nil)\n"
+        if let handle = FileHandle(forWritingAtPath: "/tmp/mos_performscroll.txt") {
+            handle.seekToEndOfFile()
+            if let data = performInfo.data(using: .utf8) {
+                handle.write(data)
+            }
+            handle.closeFile()
+        } else {
+            try? performInfo.write(toFile: "/tmp/mos_performscroll.txt", atomically: false, encoding: .utf8)
+        }
+
+        // 安全检查：确保auto-scroll已激活
+        guard isActive else {
+            NSLog("[AutoScroll] ⚠️ performScroll called but isActive=false, ignoring")
+            let errorInfo = "ERROR: performScroll called but isActive=false at \(Date())\n"
+            if let handle = FileHandle(forWritingAtPath: "/tmp/mos_performscroll_error.txt") {
+                handle.seekToEndOfFile()
+                if let data = errorInfo.data(using: .utf8) {
+                    handle.write(data)
+                }
+                handle.closeFile()
+            } else {
+                try? errorInfo.write(toFile: "/tmp/mos_performscroll_error.txt", atomically: false, encoding: .utf8)
+            }
+            return
+        }
+
+        guard let origin = originPoint else {
+            NSLog("[AutoScroll] ⚠️ performScroll called but originPoint=nil, ignoring")
+            let errorInfo = "ERROR: performScroll called but originPoint=nil at \(Date())\n"
+            if let handle = FileHandle(forWritingAtPath: "/tmp/mos_performscroll_error.txt") {
+                handle.seekToEndOfFile()
+                if let data = errorInfo.data(using: .utf8) {
+                    handle.write(data)
+                }
+                handle.closeFile()
+            } else {
+                try? errorInfo.write(toFile: "/tmp/mos_performscroll_error.txt", atomically: false, encoding: .utf8)
+            }
+            return
+        }
 
         // 获取当前鼠标位置
         let current = NSEvent.mouseLocation
+
+        // NOTE: We do NOT check if mouse moves into UI area during scroll
+        // The UI area check is only done on initial click
+        // Once scrolling is active, we allow the mouse to move anywhere
+        // This lets users move mouse up (into bookmarks area) to scroll down
 
         // 计算与原点的垂直距离
         let deltaY = current.y - origin.y
