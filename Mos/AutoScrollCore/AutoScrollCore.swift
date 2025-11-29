@@ -108,8 +108,15 @@ class AutoScrollCore {
                 NSLog("[AutoScroll] Stopping auto-scroll")
                 stopAutoScroll()
             } else {
-                NSLog("[AutoScroll] Starting auto-scroll at (\(point.x), \(point.y))")
-                startAutoScroll(at: point)
+                NSLog("[AutoScroll] ========== MIDDLE BUTTON CLICK at (\(point.x), \(point.y)) ==========")
+                
+                // 检查是否应该激活自动滚动
+                if shouldActivateAutoScroll(at: point) {
+                    NSLog("[AutoScroll] ✅ Starting auto-scroll")
+                    startAutoScroll(at: point)
+                } else {
+                    NSLog("[AutoScroll] ❌ Auto-scroll blocked - not in scrollable area or in browser UI")
+                }
             }
         } else {
             NSLog("[AutoScroll] Button release after drag (distance: \(distance)px), no action")
@@ -118,6 +125,184 @@ class AutoScrollCore {
         middleButtonPressed = false
         pressLocation = nil
         pressTime = nil
+    }
+    
+    // MARK: - Scrollable Area Detection
+    
+    /// 检查是否应该在给定位置激活自动滚动
+    func shouldActivateAutoScroll(at point: CGPoint) -> Bool {
+        // 检查是否在浏览器UI区域（书签栏、标签栏等）
+        if isInBrowserUIArea(at: point) {
+            return false
+        }
+        
+        // 检查是否有可滚动内容
+        return hasScrollableContent(at: point)
+    }
+    
+    /// 检查点击位置是否在浏览器UI区域（书签栏、标签栏、地址栏）
+    func isInBrowserUIArea(at point: CGPoint) -> Bool {
+        let windowList = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: Any]]
+        
+        guard let windows = windowList else { return false }
+        
+        // 找到点击位置的窗口
+        for window in windows {
+            guard let bounds = window[kCGWindowBounds as String] as? [String: CGFloat],
+                  let x = bounds["X"], let y = bounds["Y"],
+                  let width = bounds["Width"], let height = bounds["Height"],
+                  point.x >= x && point.x <= x + width &&
+                  point.y >= y && point.y <= y + height else {
+                continue
+            }
+            
+            // 检查是否是浏览器窗口
+            if let ownerName = window[kCGWindowOwnerName as String] as? String,
+               (ownerName.contains("Chrome") || ownerName.contains("Chromium") || 
+                ownerName.contains("Safari") || ownerName.contains("Firefox") || 
+                ownerName.contains("Edge") || ownerName.contains("Brave") || 
+                ownerName.contains("Opera") || ownerName.contains("Arc")) {
+                
+                let relativeY = point.y - y
+                
+                NSLog("[AutoScroll] Browser: \(ownerName), Relative Y: \(relativeY)px")
+                
+                // 浏览器UI区域：
+                // - 标签栏: 0-40px
+                // - 地址栏: 40-90px
+                // - 书签栏（如果显示）: 90-125px
+                // - 扩展图标区域: 可能延伸到140px
+                // 使用动态计算：顶部300px或窗口高度的25%（取较小值）
+                let uiHeight = min(300.0, height * 0.25)
+                
+                if relativeY < uiHeight {
+                    NSLog("[AutoScroll] ❌ In browser UI area (top \(relativeY)px < \(uiHeight)px)")
+                    return true
+                }
+                
+                // 也检查底部区域（状态栏、下载栏）
+                if relativeY > height - 50 {
+                    NSLog("[AutoScroll] ❌ In browser bottom UI area")
+                    return true
+                }
+            }
+            
+            break
+        }
+        
+        return false
+    }
+    
+    /// 检查点击位置是否有可滚动内容
+    func hasScrollableContent(at point: CGPoint) -> Bool {
+        // 转换为macOS坐标系（Y轴从下往上）
+        guard let screen = NSScreen.main else {
+            NSLog("[AutoScroll] ⚠️ Cannot get main screen")
+            return false
+        }
+        
+        let screenHeight = screen.frame.height
+        let axPoint = CGPoint(x: point.x, y: screenHeight - point.y)
+        
+        // 获取点击位置的可访问性元素
+        guard let element = getElementAtPoint(axPoint) else {
+            NSLog("[AutoScroll] ⚠️ No accessibility element at point")
+            return false
+        }
+        
+        // 检查元素及其父元素链
+        var current: AXUIElement? = element
+        var depth = 0
+        let maxDepth = 15
+        
+        while let elem = current, depth < maxDepth {
+            let role = getRole(of: elem)
+            let hasScrollBars = hasScrollBars(elem)
+            
+            NSLog("[AutoScroll] Level \(depth): Role=\(role ?? "nil"), HasScrollBars=\(hasScrollBars)")
+            
+            // 检查是否是可滚动的元素类型
+            if let r = role {
+                // Web内容区域
+                if r == kAXScrollAreaRole as String || 
+                   r == "AXWebArea" || 
+                   r == kAXTextAreaRole as String ||
+                   r == "AXGroup" && hasScrollBars {
+                    NSLog("[AutoScroll] ✅ Found scrollable element: \(r)")
+                    return true
+                }
+                
+                // 明确的非滚动UI元素
+                if r == kAXButtonRole as String ||
+                   r == kAXToolbarRole as String ||
+                   r == "AXTabGroup" ||
+                   r == kAXRadioButtonRole as String ||
+                   r == "AXLink" ||
+                   r == kAXImageRole as String ||
+                   r == kAXMenuRole as String ||
+                   r == "AXTextField" {
+                    NSLog("[AutoScroll] ❌ Found UI element (non-scrollable): \(r)")
+                    return false
+                }
+            }
+            
+            // 尝试获取父元素
+            current = getParentElement(of: elem)
+            depth += 1
+        }
+        
+        NSLog("[AutoScroll] ⚠️ No scrollable content found after checking \(depth) levels")
+        return false
+    }
+    
+    // MARK: - Accessibility Helpers
+    
+    /// 获取指定点的可访问性元素
+    func getElementAtPoint(_ point: CGPoint) -> AXUIElement? {
+        let systemWideElement = AXUIElementCreateSystemWide()
+        var element: AXUIElement?
+        
+        let result = AXUIElementCopyElementAtPosition(systemWideElement, Float(point.x), Float(point.y), &element)
+        
+        if result == .success {
+            return element
+        }
+        return nil
+    }
+    
+    /// 获取元素的角色
+    func getRole(of element: AXUIElement) -> String? {
+        var value: AnyObject?
+        let result = AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &value)
+        
+        if result == .success, let role = value as? String {
+            return role
+        }
+        return nil
+    }
+    
+    /// 获取父元素
+    func getParentElement(of element: AXUIElement) -> AXUIElement? {
+        var value: AnyObject?
+        let result = AXUIElementCopyAttributeValue(element, kAXParentAttribute as CFString, &value)
+        
+        if result == .success {
+            return (value as! AXUIElement)
+        }
+        return nil
+    }
+    
+    /// 检查元素是否有滚动条
+    func hasScrollBars(_ element: AXUIElement) -> Bool {
+        // 检查垂直滚动条
+        var verticalScrollBar: AnyObject?
+        let vResult = AXUIElementCopyAttributeValue(element, "AXVerticalScrollBar" as CFString, &verticalScrollBar)
+        
+        // 检查水平滚动条
+        var horizontalScrollBar: AnyObject?
+        let hResult = AXUIElementCopyAttributeValue(element, "AXHorizontalScrollBar" as CFString, &horizontalScrollBar)
+        
+        return vResult == .success || hResult == .success
     }
 
     // MARK: - 自动滚动控制
