@@ -50,6 +50,7 @@ struct OptionItem {
         static let MaxSpeed = "autoScrollMaxSpeed"
         static let ActivationButton = "autoScrollActivationButton"
         static let AppExceptions = "autoScrollAppExceptions"
+        static let DarkMode = "autoScrollDarkMode"
     }
 }
 
@@ -147,6 +148,7 @@ extension Options {
         autoScroll.maxSpeed = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.MaxSpeed) as? CGFloat ?? 30.0
         autoScroll.activationButton = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.ActivationButton) as? Int ?? 2
         autoScroll.appExceptions = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.AppExceptions) as? [String] ?? []
+        autoScroll.darkMode = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.DarkMode) as? Bool ?? false
         // 解锁
         readingOptionsLock = false
     }
@@ -188,6 +190,7 @@ extension Options {
             UserDefaults.standard.set(autoScroll.maxSpeed, forKey: OptionItem.AutoScroll.MaxSpeed)
             UserDefaults.standard.set(autoScroll.activationButton, forKey: OptionItem.AutoScroll.ActivationButton)
             UserDefaults.standard.set(autoScroll.appExceptions, forKey: OptionItem.AutoScroll.AppExceptions)
+            UserDefaults.standard.set(autoScroll.darkMode, forKey: OptionItem.AutoScroll.DarkMode)
             // 按钮绑定
             saveButtonBindingsData()
         }

@@ -18,14 +18,12 @@ class AutoScrollOverlay {
         NSLog("[AutoScrollOverlay] show(at: \(point))")
 
         // 创建图标图像
-        let iconSize: CGFloat = 48
+        let iconSize: CGFloat = 32
         let image = createAutoScrollIcon(size: iconSize)
 
         // 创建图像视图
         imageView = NSImageView(frame: NSRect(x: 0, y: 0, width: iconSize, height: iconSize))
         imageView?.image = image
-        imageView?.wantsLayer = true
-        imageView?.layer?.backgroundColor = NSColor.red.withAlphaComponent(0.5).cgColor
 
         // 找到光标所在的屏幕
         var targetScreen: NSScreen?
@@ -61,14 +59,13 @@ class AutoScrollOverlay {
             defer: false
         )
 
-        overlayWindow?.backgroundColor = .red
-        overlayWindow?.isOpaque = true
-        overlayWindow?.hasShadow = true
+        overlayWindow?.backgroundColor = .clear
+        overlayWindow?.isOpaque = false
+        overlayWindow?.hasShadow = false
         overlayWindow?.level = .statusBar
         overlayWindow?.ignoresMouseEvents = true
         overlayWindow?.contentView = imageView
         overlayWindow?.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
-        overlayWindow?.alphaValue = 0.8
 
         overlayWindow?.orderFrontRegardless()
         NSLog("[AutoScrollOverlay] Window shown: \(overlayWindow?.isVisible ?? false), screen: \(overlayWindow?.screen?.frame ?? .zero)")
@@ -87,20 +84,26 @@ class AutoScrollOverlay {
 
         image.lockFocus()
 
-        // 绘制白色背景
-        NSColor.white.withAlphaComponent(0.95).set()
-        let background = NSBezierPath(ovalIn: NSRect(x: 2, y: 2, width: size - 4, height: size - 4))
-        background.fill()
+        let isDarkMode = Options.shared.autoScroll.darkMode
+
+        // 绘制背景圆圈（如果启用深色模式）
+        if isDarkMode {
+            NSColor.white.withAlphaComponent(0.95).set()
+            let background = NSBezierPath(ovalIn: NSRect(x: 1, y: 1, width: size - 2, height: size - 2))
+            background.fill()
+        }
 
         // 缩放和翻转Y轴（SVG坐标系与NSView坐标系相反）
-        let scale = size / 16.0
+        // 使用更小的缩放比例，让SVG图标不触碰圆圈边界
+        let scale = (size * 0.85) / 16.0  // 减小到85%，留出15%的边距
+        let offset = size * 0.075  // 居中偏移量
         let transform = NSAffineTransform()
-        transform.translateX(by: 0, yBy: size)
+        transform.translateX(by: offset, yBy: size - offset)
         transform.scaleX(by: scale, yBy: -scale)
         transform.concat()
 
-        // 设置颜色 #b5b5b5
-        let iconColor = NSColor(red: 0xb5/255.0, green: 0xb5/255.0, blue: 0xb5/255.0, alpha: 1.0)
+        // 设置图标颜色：深色模式用黑色，否则用灰色 #b5b5b5
+        let iconColor = isDarkMode ? NSColor.black : NSColor(red: 0xb5/255.0, green: 0xb5/255.0, blue: 0xb5/255.0, alpha: 1.0)
         iconColor.setFill()
 
         // Path 1: 中心圆圈 (circle at center)

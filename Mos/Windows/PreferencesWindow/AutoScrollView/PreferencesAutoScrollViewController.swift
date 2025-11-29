@@ -15,6 +15,9 @@ class PreferencesAutoScrollViewController: NSViewController {
     // Enable/Disable toggle
     private var enabledCheckBox: NSButton!
 
+    // Dark mode toggle
+    private var darkModeCheckBox: NSButton!
+
     // Sensitivity slider (0.2x - 3.0x)
     private var sensitivitySlider: NSSlider!
     private var sensitivityLabel: NSTextField!
@@ -92,6 +95,12 @@ class PreferencesAutoScrollViewController: NSViewController {
         enabledCheckBox = NSButton(checkboxWithTitle: NSLocalizedString("Enable Auto-Scroll", comment: "Enable auto-scroll"), target: self, action: #selector(enabledChanged))
         enabledCheckBox.frame = NSRect(x: 20, y: yPosition, width: 200, height: 22)
         view.addSubview(enabledCheckBox)
+        yPosition -= 30
+
+        // Dark mode checkbox
+        darkModeCheckBox = NSButton(checkboxWithTitle: NSLocalizedString("White Background (dark mode)", comment: "Dark mode icon"), target: self, action: #selector(darkModeChanged))
+        darkModeCheckBox.frame = NSRect(x: 20, y: yPosition, width: 250, height: 22)
+        view.addSubview(darkModeCheckBox)
         yPosition -= 45
 
         // Separator
@@ -218,6 +227,7 @@ class PreferencesAutoScrollViewController: NSViewController {
         let options = Options.shared.autoScroll
 
         enabledCheckBox.state = options.enabled ? .on : .off
+        darkModeCheckBox.state = options.darkMode ? .on : .off
 
         sensitivitySlider.doubleValue = options.sensitivity
         sensitivityValueLabel.stringValue = String(format: "%.1fx", options.sensitivity)
@@ -251,6 +261,10 @@ class PreferencesAutoScrollViewController: NSViewController {
     @objc private func enabledChanged() {
         Options.shared.autoScroll.enabled = enabledCheckBox.state == .on
         syncViewWithOptions()
+    }
+
+    @objc private func darkModeChanged() {
+        Options.shared.autoScroll.darkMode = darkModeCheckBox.state == .on
     }
 
     @objc private func sensitivityChanged() {
