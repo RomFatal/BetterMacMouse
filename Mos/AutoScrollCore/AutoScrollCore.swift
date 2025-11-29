@@ -196,8 +196,10 @@ class AutoScrollCore {
         let direction: CGFloat = deltaY > 0 ? 1.0 : -1.0
 
         // 二次加速：滚动速度随距离增加而加速
-        let acceleration = pow(effectiveDistance / 50.0, 2.0)
-        let scrollSpeed = min(acceleration * 2.5, maxSpeed)
+        // 使用 maxSpeed 作为基准，距离越大速度越快
+        let normalizedDistance = effectiveDistance / 100.0  // 标准化距离
+        let acceleration = pow(normalizedDistance, 1.8)  // 非线性加速
+        let scrollSpeed = min(acceleration * maxSpeed * 0.5, maxSpeed)
 
         // 应用灵敏度
         // 对于低速（<1.0），使用指数缩放使其更慢

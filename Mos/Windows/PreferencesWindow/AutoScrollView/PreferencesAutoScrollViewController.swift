@@ -68,7 +68,7 @@ class PreferencesAutoScrollViewController: NSViewController {
 
     private func setupUI() {
         guard view.bounds.height > 0 else { return }
-        var yPosition: CGFloat = view.bounds.height - 40
+        var yPosition: CGFloat = view.bounds.height - 30
 
         // Title
         let titleLabel = createLabel(
@@ -76,39 +76,39 @@ class PreferencesAutoScrollViewController: NSViewController {
             fontSize: 18,
             bold: true
         )
-        titleLabel.frame = NSRect(x: 20, y: yPosition, width: 560, height: 30)
+        titleLabel.frame = NSRect(x: 20, y: yPosition, width: 560, height: 25)
         view.addSubview(titleLabel)
-        yPosition -= 45
+        yPosition -= 35
 
         // Info text
         infoTextView = createLabel(
-            text: NSLocalizedString("Configure auto-scrolling behavior when middle-clicking. Auto-scroll has independent settings from regular scrolling.", comment: "Auto-scroll info"),
+            text: NSLocalizedString("Configure auto-scrolling when middle-clicking.", comment: "Auto-scroll info"),
             fontSize: 11,
             bold: false
         )
         infoTextView.textColor = .secondaryLabelColor
-        infoTextView.frame = NSRect(x: 20, y: yPosition, width: 560, height: 30)
+        infoTextView.frame = NSRect(x: 20, y: yPosition, width: 560, height: 20)
         view.addSubview(infoTextView)
-        yPosition -= 40
+        yPosition -= 28
 
         // Enabled checkbox
         enabledCheckBox = NSButton(checkboxWithTitle: NSLocalizedString("Enable Auto-Scroll", comment: "Enable auto-scroll"), target: self, action: #selector(enabledChanged))
         enabledCheckBox.frame = NSRect(x: 20, y: yPosition, width: 200, height: 22)
         view.addSubview(enabledCheckBox)
-        yPosition -= 30
+        yPosition -= 25
 
         // Dark mode checkbox
         darkModeCheckBox = NSButton(checkboxWithTitle: NSLocalizedString("White Background (dark mode)", comment: "Dark mode icon"), target: self, action: #selector(darkModeChanged))
         darkModeCheckBox.frame = NSRect(x: 20, y: yPosition, width: 250, height: 22)
         view.addSubview(darkModeCheckBox)
-        yPosition -= 45
+        yPosition -= 32
 
         // Separator
         let separator1 = NSBox()
         separator1.boxType = .separator
         separator1.frame = NSRect(x: 20, y: yPosition, width: 560, height: 1)
         view.addSubview(separator1)
-        yPosition -= 30
+        yPosition -= 25
 
         // Sensitivity slider
         sensitivityLabel = createLabel(text: NSLocalizedString("Scroll Speed Sensitivity:", comment: ""), fontSize: 13, bold: false)
@@ -119,12 +119,12 @@ class PreferencesAutoScrollViewController: NSViewController {
         sensitivityValueLabel.alignment = .right
         sensitivityValueLabel.frame = NSRect(x: 520, y: yPosition, width: 60, height: 20)
         view.addSubview(sensitivityValueLabel)
-        yPosition -= 30
+        yPosition -= 25
 
         sensitivitySlider = NSSlider(value: 1.0, minValue: 0.2, maxValue: 3.0, target: self, action: #selector(sensitivityChanged))
         sensitivitySlider.frame = NSRect(x: 20, y: yPosition, width: 560, height: 22)
         view.addSubview(sensitivitySlider)
-        yPosition -= 40
+        yPosition -= 30
 
         // Dead zone slider
         deadZoneLabel = createLabel(text: NSLocalizedString("Dead Zone (no scroll near origin):", comment: ""), fontSize: 13, bold: false)
@@ -135,12 +135,12 @@ class PreferencesAutoScrollViewController: NSViewController {
         deadZoneValueLabel.alignment = .right
         deadZoneValueLabel.frame = NSRect(x: 520, y: yPosition, width: 60, height: 20)
         view.addSubview(deadZoneValueLabel)
-        yPosition -= 30
+        yPosition -= 25
 
         deadZoneSlider = NSSlider(value: 5.0, minValue: 0.0, maxValue: 20.0, target: self, action: #selector(deadZoneChanged))
         deadZoneSlider.frame = NSRect(x: 20, y: yPosition, width: 560, height: 22)
         view.addSubview(deadZoneSlider)
-        yPosition -= 40
+        yPosition -= 30
 
         // Drag threshold slider
         dragThresholdLabel = createLabel(text: NSLocalizedString("Drag Threshold (click vs drag):", comment: ""), fontSize: 13, bold: false)
@@ -151,12 +151,12 @@ class PreferencesAutoScrollViewController: NSViewController {
         dragThresholdValueLabel.alignment = .right
         dragThresholdValueLabel.frame = NSRect(x: 520, y: yPosition, width: 60, height: 20)
         view.addSubview(dragThresholdValueLabel)
-        yPosition -= 30
+        yPosition -= 25
 
         dragThresholdSlider = NSSlider(value: 10.0, minValue: 5.0, maxValue: 30.0, target: self, action: #selector(dragThresholdChanged))
         dragThresholdSlider.frame = NSRect(x: 20, y: yPosition, width: 560, height: 22)
         view.addSubview(dragThresholdSlider)
-        yPosition -= 40
+        yPosition -= 30
 
         // Max speed slider
         maxSpeedLabel = createLabel(text: NSLocalizedString("Maximum Scroll Speed:", comment: ""), fontSize: 13, bold: false)
@@ -167,19 +167,19 @@ class PreferencesAutoScrollViewController: NSViewController {
         maxSpeedValueLabel.alignment = .right
         maxSpeedValueLabel.frame = NSRect(x: 520, y: yPosition, width: 60, height: 20)
         view.addSubview(maxSpeedValueLabel)
-        yPosition -= 30
+        yPosition -= 25
 
         maxSpeedSlider = NSSlider(value: 30.0, minValue: 10.0, maxValue: 100.0, target: self, action: #selector(maxSpeedChanged))
         maxSpeedSlider.frame = NSRect(x: 20, y: yPosition, width: 560, height: 22)
         view.addSubview(maxSpeedSlider)
-        yPosition -= 45
+        yPosition -= 32
 
         // Separator
         let separator2 = NSBox()
         separator2.boxType = .separator
         separator2.frame = NSRect(x: 20, y: yPosition, width: 560, height: 1)
         view.addSubview(separator2)
-        yPosition -= 35
+        yPosition -= 28
 
         // Activation button
         activationButtonLabel = createLabel(text: NSLocalizedString("Activation Button:", comment: ""), fontSize: 13, bold: false)
@@ -191,17 +191,6 @@ class PreferencesAutoScrollViewController: NSViewController {
         activationButtonPopup.target = self
         activationButtonPopup.action = #selector(activationButtonChanged)
         view.addSubview(activationButtonPopup)
-        yPosition -= 50
-
-        // Usage instructions
-        let usageText = createLabel(
-            text: NSLocalizedString("How to use: Click the middle button to activate auto-scroll, move mouse to control speed and direction, click any button to stop.", comment: ""),
-            fontSize: 11,
-            bold: false
-        )
-        usageText.textColor = .secondaryLabelColor
-        usageText.frame = NSRect(x: 20, y: yPosition, width: 560, height: 30)
-        view.addSubview(usageText)
         yPosition -= 40
 
         // Reset button
@@ -209,6 +198,8 @@ class PreferencesAutoScrollViewController: NSViewController {
         resetButton.bezelStyle = .rounded
         resetButton.frame = NSRect(x: 20, y: yPosition, width: 150, height: 28)
         view.addSubview(resetButton)
+
+        NSLog("[AutoScroll Prefs] Final yPosition: \(yPosition), view height: \(view.bounds.height)")
     }
 
     private func createLabel(text: String, fontSize: CGFloat, bold: Bool) -> NSTextField {
@@ -305,8 +296,15 @@ class PreferencesAutoScrollViewController: NSViewController {
         alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
 
         if alert.runModal() == .alertFirstButtonReturn {
-            // Reset to defaults
-            Options.shared.autoScroll = OPTIONS_AUTOSCROLL_DEFAULT()
+            // Reset to default values
+            Options.shared.autoScroll.enabled = true
+            Options.shared.autoScroll.sensitivity = 1.0
+            Options.shared.autoScroll.deadZone = 5.0
+            Options.shared.autoScroll.dragThreshold = 10.0
+            Options.shared.autoScroll.maxSpeed = 30.0
+            Options.shared.autoScroll.activationButton = 2
+            Options.shared.autoScroll.darkMode = false
+            Options.shared.autoScroll.appExceptions = []
             syncViewWithOptions()
         }
     }
