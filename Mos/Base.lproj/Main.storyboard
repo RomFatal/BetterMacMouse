@@ -48,7 +48,7 @@
                 <windowController storyboardIdentifier="preferencesWindowController" showSeguePresentationStyle="single" id="7TR-R5-fGE" customClass="PreferencesWindowController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="cvF-hf-KVW">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
-                        <rect key="contentRect" x="13" y="0.0" width="450" height="315"/>
+                        <rect key="contentRect" x="13" y="0.0" width="900" height="315"/>
                         <rect key="screenRect" x="-412" y="1050" width="2560" height="1080"/>
                         <connections>
                             <outlet property="delegate" destination="7TR-R5-fGE" id="aq4-gh-Ch5"/>
@@ -71,6 +71,7 @@
                         <tabViewItem identifier="general" image="SF.gearshape" id="Qwc-OE-zHR"/>
                         <tabViewItem identifier="scrolling" image="SF.circle.dotted.circle" id="P9R-tX-qfW"/>
                         <tabViewItem identifier="buttons" image="SF.button.horizontal.top.press" id="BTN-UI-123"/>
+                        <tabViewItem identifier="autoScroll" image="SF.arrow.up.arrow.down.circle" id="ASC-RL-123"/>
                         <tabViewItem identifier="application" image="SF.app.background.dotted" id="gfS-Ix-zI5"/>
                         <tabViewItem identifier="updates" image="SF.arrow.triangle.capsulepath" id="1sm-Qq-6GS"/>
                         <tabViewItem identifier="about" image="SF.person.crop.circle.dashed" id="MrA-I8-n0Z"/>
@@ -89,6 +90,7 @@
                         <segue destination="ITL-GD-CPd" kind="relationship" relationship="tabItems" id="z3c-tg-aDc"/>
                         <segue destination="iW5-CD-5OC" kind="relationship" relationship="tabItems" id="GA4-xY-65w"/>
                         <segue destination="BTN-VC-123" kind="relationship" relationship="tabItems" id="BTN-SG-123"/>
+                        <segue destination="ASC-VC-123" kind="relationship" relationship="tabItems" id="ASC-SG-123"/>
                         <segue destination="bga-wG-iim" kind="relationship" relationship="tabItems" id="QV9-il-C7g"/>
                         <segue destination="EWu-DP-7Gj" kind="relationship" relationship="tabItems" id="gsT-c8-cJ3"/>
                         <segue destination="RfV-Ow-3mF" kind="relationship" relationship="tabItems" id="djr-7D-XVN"/>
@@ -103,13 +105,13 @@
             <objects>
                 <viewController title="General" storyboardIdentifier="general" id="ITL-GD-CPd" customClass="PreferencesGeneralViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="LZw-qp-NWH">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="105"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="105"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <box hidden="YES" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="vPz-kM-wAq">
                                 <rect key="frame" x="20" y="92" width="410" height="5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="410" id="KJL-ZZ-WMT"/>
+                                    <constraint firstAttribute="width" constant="560" id="KJL-ZZ-WMT"/>
                                 </constraints>
                             </box>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verifyAmbiguity="off" translatesAutoresizingMaskIntoConstraints="NO" id="WWH-56-xDd">
@@ -221,7 +223,7 @@
             <objects>
                 <viewController title="Buttons" storyboardIdentifier="buttons" id="BTN-VC-123" customClass="PreferencesButtonsViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="BTN-VW-123">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="321"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="321"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <visualEffectView blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="2W2-hM-ME3">
@@ -354,7 +356,7 @@
                                     <nil key="backgroundColor"/>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="450" id="O6a-JW-Ptw"/>
+                                    <constraint firstAttribute="width" constant="600" id="O6a-JW-Ptw"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="260" id="wgU-xJ-cqJ"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="R1g-hj-G0Y">
@@ -529,13 +531,30 @@
             </objects>
             <point key="canvasLocation" x="1443" y="1277"/>
         </scene>
+        <!--Auto-Scroll-->
+        <scene sceneID="ASC-SC-123">
+            <objects>
+                <customObject id="ASC-FR-123" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <viewController title="Auto-Scroll" storyboardIdentifier="autoScroll" id="ASC-VC-123" customClass="PreferencesAutoScrollViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                    <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="ASC-VW-123">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="600" id="ASC-W-CNS"/>
+                            <constraint firstAttribute="height" constant="500" id="ASC-H-CNS"/>
+                        </constraints>
+                    </visualEffectView>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1443" y="1577"/>
+        </scene>
         <!--Application-->
         <scene sceneID="UqT-28-MT6">
             <objects>
                 <customObject id="l11-a0-4Xa" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <viewController title="Application" storyboardIdentifier="application" id="bga-wG-iim" customClass="PreferencesApplicationViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" wantsLayer="YES" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="jc3-9p-Bfo">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="321"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="321"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <visualEffectView appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="underWindowBackground" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="VAL-LC-T3T">
@@ -582,7 +601,7 @@
                                     <constraint firstItem="ouh-IG-LyJ" firstAttribute="top" secondItem="VAL-LC-T3T" secondAttribute="top" id="Z0o-YV-eTd"/>
                                     <constraint firstAttribute="trailing" secondItem="ouh-IG-LyJ" secondAttribute="trailing" id="cbY-du-LsV"/>
                                     <constraint firstItem="ouh-IG-LyJ" firstAttribute="leading" secondItem="VAL-LC-T3T" secondAttribute="leading" id="hkp-a2-qzN"/>
-                                    <constraint firstAttribute="width" constant="450" id="nVH-oK-9VM"/>
+                                    <constraint firstAttribute="width" constant="600" id="nVH-oK-9VM"/>
                                 </constraints>
                             </visualEffectView>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="57" horizontalPageScroll="10" verticalLineScroll="57" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" findBarPosition="aboveHorizontalRuler" translatesAutoresizingMaskIntoConstraints="NO" id="2dP-HG-cdi">
@@ -988,7 +1007,7 @@
                             <box hidden="YES" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Ay2-Qf-INN" userLabel="WidthHolder">
                                 <rect key="frame" x="0.0" y="-2" width="450" height="5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="450" id="qe5-ty-af9"/>
+                                    <constraint firstAttribute="width" constant="600" id="qe5-ty-af9"/>
                                 </constraints>
                             </box>
                         </subviews>
@@ -1021,7 +1040,7 @@
                 <customObject id="T8g-3J-WxE" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <viewController title="Scrolling" storyboardIdentifier="scrolling" id="iW5-CD-5OC" customClass="PreferencesScrollingViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" wantsLayer="YES" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="Jsi-ke-bNZ">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="501"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="501"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verifyAmbiguity="off" translatesAutoresizingMaskIntoConstraints="NO" id="DQH-h2-1Zk">
@@ -1075,7 +1094,7 @@
                             <box verticalHuggingPriority="750" verticalCompressionResistancePriority="751" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="rQj-g8-Y0N">
                                 <rect key="frame" x="20" y="412" width="410" height="5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="410" id="7Ge-xF-ZVC"/>
+                                    <constraint firstAttribute="width" constant="560" id="7Ge-xF-ZVC"/>
                                 </constraints>
                             </box>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mKO-0m-Vb0">
@@ -1237,7 +1256,7 @@
                             <box verticalHuggingPriority="750" verticalCompressionResistancePriority="751" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="iLA-i9-HEO">
                                 <rect key="frame" x="20" y="224" width="410" height="5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="410" id="dvS-fP-hkt"/>
+                                    <constraint firstAttribute="width" constant="560" id="dvS-fP-hkt"/>
                                 </constraints>
                             </box>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zKw-pT-YRj">
@@ -1886,7 +1905,7 @@
                             <box hidden="YES" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="30e-M9-h0A" userLabel="WidthHolder">
                                 <rect key="frame" x="0.0" y="-2" width="450" height="5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="450" id="tBD-GV-RwM"/>
+                                    <constraint firstAttribute="width" constant="600" id="tBD-GV-RwM"/>
                                 </constraints>
                             </box>
                         </subviews>

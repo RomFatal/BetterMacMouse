@@ -58,6 +58,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FF163C5B4F74426E99FAE66E /* AutoScrollCore */ = {
+			isa = PBXGroup;
+			children = (
+				E01085A4DC5A4326A8E608BA /* AutoScrollCore.swift */,
+				CBF90C75E3A54CBDB844038E /* AutoScrollCursor.swift */,
+				57ACBD2A4EB041DD8714B514 /* AutoScrollUtils.swift */,
+			);
+			path = AutoScrollCore;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */

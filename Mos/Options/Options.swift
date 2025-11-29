@@ -41,20 +41,30 @@ struct OptionItem {
         static let Allowlist = "allowlist"
         static let Applications = "applications"
     }
+
+    struct AutoScroll {
+        static let Enabled = "autoScrollEnabled"
+        static let Sensitivity = "autoScrollSensitivity"
+        static let DeadZone = "autoScrollDeadZone"
+        static let DragThreshold = "autoScrollDragThreshold"
+        static let MaxSpeed = "autoScrollMaxSpeed"
+        static let ActivationButton = "autoScrollActivationButton"
+        static let AppExceptions = "autoScrollAppExceptions"
+    }
 }
 
 class Options {
-    
+
     // 单例
     static let shared = Options()
     init() { NSLog("Module initialized: Options") }
-    
+
     // 读取锁, 防止冲突
     private var readingOptionsLock = false
     // JSON 编解码工具
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
-    
+
     // 常规
     var general = OPTIONS_GENERAL_DEFAULT()
     // 滚动
@@ -69,13 +79,17 @@ class Options {
     var application = OPTIONS_APPLICATION_DEFAULT() {
         didSet { Options.shared.saveOptions() }
     }
+    // 自动滚动
+    var autoScroll = OPTIONS_AUTOSCROLL_DEFAULT() {
+        didSet { Options.shared.saveOptions() }
+    }
 }
 
 /**
  * 读取和写入
  **/
 extension Options {
-    
+
     // 从 UserDefaults 中读取到 currentOptions
     func readOptions() {
         // 配置项如果不存在则尝试用当前设置(默认设置)保存一次
@@ -125,10 +139,18 @@ extension Options {
         // 应用
         application.allowlist = UserDefaults.standard.bool(forKey: OptionItem.Application.Allowlist)
         application.applications = loadApplicationsData()
+        // 自动滚动
+        autoScroll.enabled = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.Enabled) as? Bool ?? true
+        autoScroll.sensitivity = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.Sensitivity) as? Double ?? 1.0
+        autoScroll.deadZone = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.DeadZone) as? CGFloat ?? 5.0
+        autoScroll.dragThreshold = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.DragThreshold) as? CGFloat ?? 10.0
+        autoScroll.maxSpeed = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.MaxSpeed) as? CGFloat ?? 30.0
+        autoScroll.activationButton = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.ActivationButton) as? Int ?? 2
+        autoScroll.appExceptions = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.AppExceptions) as? [String] ?? []
         // 解锁
         readingOptionsLock = false
     }
-    
+
     // 写入到 UserDefaults
     func saveOptions() {
         if !readingOptionsLock {
@@ -158,6 +180,14 @@ extension Options {
             } else {
                 NSLog("Failed to serialize applications data, skipping save")
             }
+            // 自动滚动
+            UserDefaults.standard.set(autoScroll.enabled, forKey: OptionItem.AutoScroll.Enabled)
+            UserDefaults.standard.set(autoScroll.sensitivity, forKey: OptionItem.AutoScroll.Sensitivity)
+            UserDefaults.standard.set(autoScroll.deadZone, forKey: OptionItem.AutoScroll.DeadZone)
+            UserDefaults.standard.set(autoScroll.dragThreshold, forKey: OptionItem.AutoScroll.DragThreshold)
+            UserDefaults.standard.set(autoScroll.maxSpeed, forKey: OptionItem.AutoScroll.MaxSpeed)
+            UserDefaults.standard.set(autoScroll.activationButton, forKey: OptionItem.AutoScroll.ActivationButton)
+            UserDefaults.standard.set(autoScroll.appExceptions, forKey: OptionItem.AutoScroll.AppExceptions)
             // 按钮绑定
             saveButtonBindingsData()
         }
