@@ -287,15 +287,16 @@ class AutoScrollCore {
         var logText = "\n=== getBrowserWindowInfo at \(point) ===\n"
 
         // Convert NSScreen coordinates (Y=0 at bottom) to CGWindow coordinates (Y=0 at top)
+        // CRITICAL: Use screens.first (primary screen) not .main (focused screen)
         let cgPoint: CGPoint
-        if let mainScreen = NSScreen.main {
-            cgPoint = CGPoint(x: point.x, y: mainScreen.frame.height - point.y)
-            logText += "Screen height: \(mainScreen.frame.height)\n"
+        if let primaryScreen = NSScreen.screens.first {
+            cgPoint = CGPoint(x: point.x, y: primaryScreen.frame.height - point.y)
+            logText += "Primary screen height: \(primaryScreen.frame.height)\n"
             logText += "NSScreen: (\(point.x), \(point.y)) -> CGWindow: (\(cgPoint.x), \(cgPoint.y))\n"
             NSLog("[AutoScroll] Coordinate conversion: NSScreen(\(point.x), \(point.y)) -> CGWindow(\(cgPoint.x), \(cgPoint.y))")
         } else {
             cgPoint = point
-            logText += "WARNING: No main screen!\n"
+            logText += "WARNING: No primary screen!\n"
         }
 
         let windowList = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: Any]]
@@ -420,13 +421,14 @@ class AutoScrollCore {
     ///   - point: 点击位置
     ///   - strictMode: 严格模式（用于浏览器），宽松模式（用于其他应用）
     func hasScrollableContent(at point: CGPoint, strictMode: Bool) -> Bool {
-        // 转换为macOS坐标系（Y轴从下往上）
-        guard let screen = NSScreen.main else {
-            NSLog("[AutoScroll] ⚠️ Cannot get main screen")
-            return !strictMode // 严格模式返回false，宽松模式返回true
+        // Convert to macOS coordinate system (Y-axis from bottom to top)
+        // CRITICAL: Use screens.first (primary screen) not .main (focused screen)
+        guard let primaryScreen = NSScreen.screens.first else {
+            NSLog("[AutoScroll] ⚠️ Cannot get primary screen")
+            return !strictMode // Strict mode returns false, lenient mode returns true
         }
 
-        let screenHeight = screen.frame.height
+        let screenHeight = primaryScreen.frame.height
         let axPoint = CGPoint(x: point.x, y: screenHeight - point.y)
 
         // 获取点击位置的可访问性元素
