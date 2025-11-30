@@ -144,7 +144,7 @@ extension Options {
         autoScroll.enabled = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.Enabled) as? Bool ?? true
         autoScroll.sensitivity = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.Sensitivity) as? Double ?? 1.0
         autoScroll.deadZone = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.DeadZone) as? CGFloat ?? 5.0
-        autoScroll.dragThreshold = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.DragThreshold) as? CGFloat ?? 10.0
+        autoScroll.dragThreshold = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.DragThreshold) as? CGFloat ?? 20.0
         autoScroll.maxSpeed = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.MaxSpeed) as? CGFloat ?? 30.0
         autoScroll.activationButton = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.ActivationButton) as? Int ?? 2
         autoScroll.appExceptions = UserDefaults.standard.object(forKey: OptionItem.AutoScroll.AppExceptions) as? [String] ?? []

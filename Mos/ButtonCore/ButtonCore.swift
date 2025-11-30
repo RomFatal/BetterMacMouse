@@ -35,8 +35,6 @@ class ButtonCore {
 
     // MARK: - 按钮事件处理
     let buttonEventCallBack: CGEventTapCallBack = { (proxy, type, event, refcon) in
-        NSLog("[ButtonCore] ⚡️ EVENT: type=\(type.rawValue)")
-
         let buttonNumber = event.getIntegerValueField(.mouseEventButtonNumber)
         let cgLocation = event.location
 

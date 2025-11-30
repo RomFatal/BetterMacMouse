@@ -230,7 +230,7 @@ class AutoScrollCore {
 
                     """
                     try? afterInfo.write(toFile: "/tmp/mos_autoscroll_blocked.txt", atomically: false, encoding: .utf8)
-                    return true  // Consume event to prevent Chrome's auto-scroll
+                    return false  // Don't consume - let link clicks pass through to browser
                 }
             }
         } else {
@@ -470,13 +470,21 @@ class AutoScrollCore {
                     return true
                 }
 
-                // 明确的非滚动UI元素
+                // Explicit non-scrollable UI elements
+                // AXLink: In strict mode (browsers), immediately block to prevent auto-scroll on links
+                if r == "AXLink" {
+                    NSLog("[AutoScroll] ❌ Found AXLink - blocking auto-scroll")
+                    if strictMode {
+                        NSLog("[AutoScroll] ❌ Strict mode: AXLink blocks auto-scroll immediately")
+                        return false  // Immediately return false for links in browsers
+                    }
+                    foundBlockingElement = true
+                }
+                
                 if r == kAXButtonRole as String ||
                    r == kAXToolbarRole as String ||
                    r == "AXTabGroup" ||
                    r == kAXRadioButtonRole as String ||
-                   r == "AXLink" ||
-                   r == "AXStaticText" || // 标题栏文本
                    r == "AXImage" || // 书签图标、标签页图标
                    r == kAXMenuRole as String ||
                    r == kAXMenuItemRole as String ||
