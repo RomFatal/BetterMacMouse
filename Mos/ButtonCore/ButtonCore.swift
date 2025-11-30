@@ -132,7 +132,7 @@ class ButtonCore {
 
             switch type {
             case .otherMouseDown:
-                let downLog = "  -> otherMouseDown - checking browserInfo...\n"
+                let downLog = "  -> otherMouseDown - trying to start auto-scroll\n"
                 if let fileHandle = FileHandle(forWritingAtPath: "/tmp/mos_button_debug.txt") {
                     fileHandle.seekToEndOfFile()
                     if let data = downLog.data(using: .utf8) {
@@ -141,43 +141,8 @@ class ButtonCore {
                     fileHandle.closeFile()
                 }
 
-                // CRITICAL: Check IMMEDIATELY if in blocked area BEFORE any other processing
-                // This ensures we can consume the event before Chrome sees it
-                let browserInfo = AutoScrollCore.shared.getBrowserWindowInfo(at: location)
-
-                let infoLog = "  -> browserInfo: isUI=\(browserInfo.isInUIArea), name=\(browserInfo.name ?? "nil")\n"
-                if let fileHandle = FileHandle(forWritingAtPath: "/tmp/mos_button_debug.txt") {
-                    fileHandle.seekToEndOfFile()
-                    if let data = infoLog.data(using: .utf8) {
-                        fileHandle.write(data)
-                    }
-                    fileHandle.closeFile()
-                }
-
-                if browserInfo.isInUIArea {
-                    // In blocked area - consume event immediately WITHOUT calling handleMiddleButtonDown
-                    NSLog("[ButtonCore] DOWN in blocked area - consuming immediately")
-                    let blockLog = "  -> BLOCKED - returning nil\n\n"
-                    if let fileHandle = FileHandle(forWritingAtPath: "/tmp/mos_button_debug.txt") {
-                        fileHandle.seekToEndOfFile()
-                        if let data = blockLog.data(using: .utf8) {
-                            fileHandle.write(data)
-                        }
-                        fileHandle.closeFile()
-                    }
-                    return nil
-                }
-
-                let proceedLog = "  -> NOT blocked - calling handleMiddleButtonDown\n"
-                if let fileHandle = FileHandle(forWritingAtPath: "/tmp/mos_button_debug.txt") {
-                    fileHandle.seekToEndOfFile()
-                    if let data = proceedLog.data(using: .utf8) {
-                        fileHandle.write(data)
-                    }
-                    fileHandle.closeFile()
-                }
-
-                // Not in blocked area - proceed normally
+                // Try to start auto-scroll - it will internally check if we're in tabs/bookmarks
+                // and return false to let those clicks pass through
                 let shouldConsume = AutoScrollCore.shared.handleMiddleButtonDown(at: location)
 
                 let consumeLog = "  -> shouldConsume=\(shouldConsume), isActive=\(AutoScrollCore.shared.isActive)\n\n"
@@ -190,14 +155,19 @@ class ButtonCore {
                 }
 
                 if shouldConsume || AutoScrollCore.shared.isActive {
-                    return nil  // Consume event to prevent Chrome's auto-scroll
+                    return nil  // Consume event to prevent browser's auto-scroll
                 }
+                // If not consumed (e.g., in bookmarks/tabs), pass through immediately
+                // Don't check button bindings for middle button when auto-scroll is enabled
+                return Unmanaged.passUnretained(event)
             case .otherMouseUp:
                 // If auto-scroll handled the event (activated OR blocked), consume it
                 let wasHandled = AutoScrollCore.shared.handleMiddleButtonUp(at: location)
                 if wasHandled || AutoScrollCore.shared.isActive {
                     return nil  // Consume event
                 }
+                // Pass through for bookmarks/tabs
+                return Unmanaged.passUnretained(event)
             default:
                 break
             }

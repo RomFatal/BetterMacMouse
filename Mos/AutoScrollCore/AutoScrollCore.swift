@@ -84,10 +84,10 @@ class AutoScrollCore {
         }
 
         if browserInfo.isInUIArea {
-            NSLog("[AutoScroll] Middle button DOWN in blocked area - consuming event")
-            let blockedLog = "BLOCKED - not setting middleButtonPressed\n"
+            NSLog("[AutoScroll] Middle button DOWN in tabs/bookmarks area - passing through")
+            let blockedLog = "BLOCKED (tabs/bookmarks) - not activating auto-scroll, passing through\n"
             try? blockedLog.write(toFile: "/tmp/mos_down_blocked.txt", atomically: false, encoding: .utf8)
-            return true  // Consume event to prevent Chrome's auto-scroll
+            return false  // Don't consume - let bookmark/tab click work normally
         }
 
         middleButtonPressed = true
@@ -319,6 +319,12 @@ class AutoScrollCore {
 
             let ownerName = window[kCGWindowOwnerName as String] as? String ?? "unknown"
             let windowName = window[kCGWindowName as String] as? String ?? "no name"
+            
+            // Skip system windows that cover the entire screen
+            let systemWindows = ["Dock", "Window Server", "Spotlight", "Control Center", "SystemUIServer"]
+            if systemWindows.contains(ownerName) {
+                continue
+            }
 
             if index < 10 { // Log first 10 windows to file
                 logText += "Window \(index): \(ownerName)\n"
