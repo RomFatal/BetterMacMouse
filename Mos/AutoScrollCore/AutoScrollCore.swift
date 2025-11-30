@@ -376,10 +376,10 @@ class AutoScrollCore {
             let relativeY = cgPoint.y - y
 
             if isBrowserWindow {
-                // 浏览器UI：更大的固定高度阻止
-                // 顶部250px（标签栏~40px + 地址栏~50px + 书签栏~40px + 扩展区域~30px + 额外缓冲~90px）
-                // 底部50px（状态栏、下载栏）
-                let topUIHeight: CGFloat = 250.0
+                // Browser UI: Only block actual UI areas
+                // Top: 130px (tabs ~40px + address bar ~50px + bookmarks bar ~40px)
+                // Bottom: 50px (status bar, download bar)
+                let topUIHeight: CGFloat = 130.0
                 let bottomUIHeight: CGFloat = 50.0
                 let isInUI = relativeY < topUIHeight || relativeY > height - bottomUIHeight
 
