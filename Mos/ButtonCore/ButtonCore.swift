@@ -19,7 +19,96 @@ class ButtonCore {
 
     // 拦截层
     var eventInterceptor: Interceptor?
+    
+    // MARK: - Cursor Detection
+    
+    /// Get the current system cursor image size to detect cursor type
+    /// Hand cursor is typically larger than arrow cursor
+    @_silgen_name("CGSGetGlobalCursorDataSize")
+    static func CGSGetGlobalCursorDataSize(_ connection: Int32, _ size: UnsafeMutablePointer<Int32>) -> Int32
+    
+    /// Get the default connection
+    @_silgen_name("CGSMainConnectionID") 
+    static func CGSMainConnectionID() -> Int32
+    
+    /// Get cursor data including image
+    @_silgen_name("CGSGetGlobalCursorData")
+    static func CGSGetGlobalCursorData(
+        _ connection: Int32,
+        _ data: UnsafeMutableRawPointer,
+        _ size: UnsafeMutablePointer<Int32>,
+        _ rowBytes: UnsafeMutablePointer<Int32>,
+        _ rect: UnsafeMutablePointer<CGRect>,
+        _ hotspot: UnsafeMutablePointer<CGPoint>,
+        _ depth: UnsafeMutablePointer<Int32>,
+        _ components: UnsafeMutablePointer<Int32>,
+        _ bitsPerComponent: UnsafeMutablePointer<Int32>
+    ) -> Int32
+    
+    // Store known cursor characteristics
+    // Arrow cursor: hotspot ~(5, 5), rect ~(28, 40)
+    // Hand cursor: hotspot ~(13, 8), rect ~(32, 32)
+    static var arrowCursorHotspot: CGPoint = CGPoint(x: 5, y: 5)
+    static var arrowCursorRect: CGRect = CGRect(x: 0, y: 0, width: 28, height: 40)
+    static var isCalibrated = false
+    
+    /// Check if the current cursor is a pointing hand
+    /// Hand cursor has different hotspot than arrow (finger tip vs corner)
+    static func isPointingHandCursor() -> Bool {
+        let connection = CGSMainConnectionID()
+        var size: Int32 = 0
+        
+        guard CGSGetGlobalCursorDataSize(connection, &size) == 0, size > 0 else {
+            return false
+        }
+        
+        var rowBytes: Int32 = 0
+        var rect = CGRect.zero
+        var hotspot = CGPoint.zero
+        var depth: Int32 = 0
+        var components: Int32 = 0
+        var bitsPerComponent: Int32 = 0
+        
+        let data = UnsafeMutableRawPointer.allocate(byteCount: Int(size), alignment: 1)
+        defer { data.deallocate() }
+        
+        guard CGSGetGlobalCursorData(connection, data, &size, &rowBytes, &rect, &hotspot, &depth, &components, &bitsPerComponent) == 0 else {
+            return false
+        }
+        
+        // Auto-calibrate if this looks like an arrow cursor
+        let looksLikeArrow = hotspot.x < 8 && hotspot.y < 8
+        if looksLikeArrow {
+            arrowCursorHotspot = hotspot
+            arrowCursorRect = rect
+            if !isCalibrated {
+                NSLog("[ButtonCore] ✅ Calibrated arrow: hotspot=\(hotspot), rect=\(rect)")
+                isCalibrated = true
+            }
+            return false
+        }
+        
+        if !isCalibrated {
+            isCalibrated = true
+        }
+        
+        // Hand cursor signature: hotspot=(13, 8), rect=(32, 32)
+        let hotspotMatchesHand = hotspot.x > 10 && hotspot.y >= 6 && hotspot.y <= 10
+        let rectIsSquare = abs(rect.width - rect.height) < 5
+        let rectIsRightSize = rect.width >= 30 && rect.width <= 34
+        
+        let looksLikeHand = hotspotMatchesHand && rectIsSquare && rectIsRightSize
+        
+        if looksLikeHand {
+            NSLog("[ButtonCore] 👆 Hand cursor detected: hotspot=\(hotspot), rect=\(rect)")
+            return true
+        }
+        
+        return false
+    }
 
+    // MARK: - Event Handling
+    
     // 组合的按钮事件掩码
     let leftDown = CGEventMask(1 << CGEventType.leftMouseDown.rawValue)
     let rightDown = CGEventMask(1 << CGEventType.rightMouseDown.rawValue)
@@ -130,39 +219,69 @@ class ButtonCore {
 
             switch type {
             case .otherMouseDown:
-                let downLog = "  -> otherMouseDown - trying to start auto-scroll\n"
-                if let fileHandle = FileHandle(forWritingAtPath: "/tmp/mos_button_debug.txt") {
-                    fileHandle.seekToEndOfFile()
-                    if let data = downLog.data(using: .utf8) {
-                        fileHandle.write(data)
+                let browserInfo = AutoScrollCore.shared.getBrowserWindowInfo(at: location)
+                
+                NSLog("[ButtonCore] ========== MIDDLE BUTTON DOWN ==========")
+                NSLog("[ButtonCore] Browser: \(browserInfo.isBrowser), inUI: \(browserInfo.isInUIArea)")
+                
+                // CURSOR DETECTION: Check if mouse is over a clickable element (link, button)
+                var isOverClickable = false
+                
+                NSLog("[ButtonCore] About to check cursor...")
+                if Thread.isMainThread {
+                    NSLog("[ButtonCore] On main thread, calling isPointingHandCursor()")
+                    isOverClickable = ButtonCore.isPointingHandCursor()
+                } else {
+                    NSLog("[ButtonCore] NOT on main thread, dispatching to main")
+                    DispatchQueue.main.sync {
+                        NSLog("[ButtonCore] Now on main thread, calling isPointingHandCursor()")
+                        isOverClickable = ButtonCore.isPointingHandCursor()
                     }
-                    fileHandle.closeFile()
+                }
+                
+                NSLog("[ButtonCore] Cursor check result: isOverClickable = \(isOverClickable)")
+                
+                if isOverClickable {
+                    NSLog("[ButtonCore] 👆 Pointing hand cursor detected - passing through for link click")
+                    // Don't start auto-scroll, let browser handle the link click
+                    return Unmanaged.passUnretained(event)
+                }
+                
+                if browserInfo.isBrowser && !browserInfo.isInUIArea {
+                    // Browser content area, NOT over a link - start auto-scroll
+                    NSLog("[ButtonCore] Browser content area, not over link - starting auto-scroll")
+                    AutoScrollCore.shared.handleMiddleButtonDown(at: location)
+                    return nil  // Consume event since we're handling it
                 }
 
-                // Try to start auto-scroll - it will internally check if we're in tabs/bookmarks
-                // and return false to let those clicks pass through
+                // Non-browser: use our auto-scroll and consume event
                 let shouldConsume = AutoScrollCore.shared.handleMiddleButtonDown(at: location)
-
-                let consumeLog = "  -> shouldConsume=\(shouldConsume), isActive=\(AutoScrollCore.shared.isActive)\n\n"
-                if let fileHandle = FileHandle(forWritingAtPath: "/tmp/mos_button_debug.txt") {
-                    fileHandle.seekToEndOfFile()
-                    if let data = consumeLog.data(using: .utf8) {
-                        fileHandle.write(data)
-                    }
-                    fileHandle.closeFile()
-                }
-
                 if shouldConsume || AutoScrollCore.shared.isActive {
-                    return nil  // Consume event to prevent browser's auto-scroll
+                    return nil  // Consume event
                 }
-                // If not consumed (e.g., in bookmarks/tabs), pass through immediately
-                // Don't check button bindings for middle button when auto-scroll is enabled
                 return Unmanaged.passUnretained(event)
             case .otherMouseUp:
-                // If auto-scroll handled the event (activated OR blocked), consume it
+                // Check if cursor is pointing hand - if so, pass through for link
+                var isOverClickable = false
+                if Thread.isMainThread {
+                    isOverClickable = ButtonCore.isPointingHandCursor()
+                } else {
+                    DispatchQueue.main.sync {
+                        isOverClickable = ButtonCore.isPointingHandCursor()
+                    }
+                }
+                
+                if isOverClickable {
+                    NSLog("[ButtonCore] 👆 Pointing hand cursor on UP - passing through")
+                    return Unmanaged.passUnretained(event)
+                }
+                
                 let wasHandled = AutoScrollCore.shared.handleMiddleButtonUp(at: location)
+                
+                // Check if we're in a browser
+                let browserInfo = AutoScrollCore.shared.getBrowserWindowInfo(at: location)                
                 if wasHandled || AutoScrollCore.shared.isActive {
-                    return nil  // Consume event
+                    return nil  // Consume event (non-browser apps)
                 }
                 // Pass through for bookmarks/tabs
                 return Unmanaged.passUnretained(event)
