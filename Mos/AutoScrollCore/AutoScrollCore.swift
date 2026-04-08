@@ -78,7 +78,7 @@ class AutoScrollCore {
         middleButtonPressed = true
         pressLocation = point
         pressTime = Date()
-        
+
         return false  // Pass through to let button up handler decide
     }
 
@@ -233,7 +233,7 @@ class AutoScrollCore {
 
             let ownerName = window[kCGWindowOwnerName as String] as? String ?? "unknown"
             let windowName = window[kCGWindowName as String] as? String ?? "no name"
-            
+
             // Skip system windows that cover the entire screen
             let systemWindows = ["Dock", "Window Server", "Spotlight", "Control Center", "SystemUIServer"]
             if systemWindows.contains(ownerName) {
@@ -336,30 +336,30 @@ class AutoScrollCore {
 
         // Try multiple methods to get the element at point
         var element: AXUIElement?
-        
+
         // Method 1: System-wide element
         element = getElementAtPoint(axPoint)
-        
+
         // Method 2: If we got a scroll area, try getting element via the frontmost app
         if strictMode, let frontApp = NSWorkspace.shared.frontmostApplication {
             let appElement = AXUIElementCreateApplication(frontApp.processIdentifier)
             if let appPointElement = getElementAtPointViaApp(axPoint, appElement: appElement) {
                 let role = getRole(of: appPointElement)
-                
+
                 // If the app-level query gives us a more specific element, use it
                 if role != "AXScrollArea" && role != nil {
                     element = appPointElement
                 }
             }
         }
-        
+
         guard let element = element else {
             return !strictMode // 严格模式返回false，宽松模式返回true
         }
 
         // CRITICAL: In browsers, check for clickable elements
         if strictMode {
-            
+
             // Note: Link detection removed - now handled by cursor detection in ButtonCore.swift
             // Accessibility APIs don't work for Chromium browsers' web content
         }
@@ -469,7 +469,7 @@ class AutoScrollCore {
         }
         return nil
     }
-    
+
     // MARK: - Removed Obsolete Link Detection
     // Previous attempts using accessibility APIs (getURL, getSubrole, getDescription, isActionableElement)
     // were removed because Chromium browsers don't expose web content via macOS accessibility APIs.
@@ -498,86 +498,86 @@ class AutoScrollCore {
 
         return vResult == .success || hResult == .success
     }
-    
+
     /// Get children of an accessibility element
     /// Tries multiple attributes since browsers may use different ones
     func getChildren(of element: AXUIElement) -> [AXUIElement]? {
         // Try standard children attribute first
         var value: AnyObject?
         var result = AXUIElementCopyAttributeValue(element, kAXChildrenAttribute as CFString, &value)
-        
+
         if result == .success, let children = value as? [AXUIElement], !children.isEmpty {
             return children
         }
-        
+
         // Try AXContents (used by some browsers for web content)
         result = AXUIElementCopyAttributeValue(element, "AXContents" as CFString, &value)
         if result == .success, let children = value as? [AXUIElement], !children.isEmpty {
             return children
         }
-        
+
         // Try AXVisibleChildren
         result = AXUIElementCopyAttributeValue(element, kAXVisibleChildrenAttribute as CFString, &value)
         if result == .success, let children = value as? [AXUIElement], !children.isEmpty {
             return children
         }
-        
+
         return nil
     }
-    
+
     /// Get the focused element within an application - browsers often have the link as focused
     func getFocusedElement(from element: AXUIElement) -> AXUIElement? {
         var value: AnyObject?
         let result = AXUIElementCopyAttributeValue(element, kAXFocusedUIElementAttribute as CFString, &value)
-        
+
         if result == .success {
             return (value as! AXUIElement)
         }
         return nil
     }
-    
+
     /// Get the element at position using the application element instead of system-wide
     /// This sometimes gives more accurate results for web content
     func getElementAtPointViaApp(_ point: CGPoint, appElement: AXUIElement) -> AXUIElement? {
         var element: AXUIElement?
         let result = AXUIElementCopyElementAtPosition(appElement, Float(point.x), Float(point.y), &element)
-        
+
         if result == .success {
             return element
         }
         return nil
     }
-    
+
     /// Get the frame/position of an accessibility element
     func getElementFrame(_ element: AXUIElement) -> CGRect? {
         var positionValue: AnyObject?
         var sizeValue: AnyObject?
-        
+
         let posResult = AXUIElementCopyAttributeValue(element, kAXPositionAttribute as CFString, &positionValue)
         let sizeResult = AXUIElementCopyAttributeValue(element, kAXSizeAttribute as CFString, &sizeValue)
-        
+
         guard posResult == .success, sizeResult == .success else { return nil }
-        
+
         var position = CGPoint.zero
         var size = CGSize.zero
-        
+
         if let posValue = positionValue {
             AXValueGetValue(posValue as! AXValue, .cgPoint, &position)
         }
         if let szValue = sizeValue {
             AXValueGetValue(szValue as! AXValue, .cgSize, &size)
         }
-        
+
         return CGRect(origin: position, size: size)
     }
-    
+
     /// Find the deepest element at a given point by drilling into children
     func findDeepestElementAtPoint(_ element: AXUIElement, point: CGPoint) -> AXUIElement {
         guard let children = getChildren(of: element), !children.isEmpty else {
             return element
         }
-        
-        
+
+
         // Check each child to see if the point is within its bounds
         for (index, child) in children.enumerated() {
             let role = getRole(of: child) ?? "unknown"
@@ -594,24 +594,24 @@ class AutoScrollCore {
                 }
             }
         }
-        
+
         // No child contains the point, return current element
         return element
     }
-    
+
     /// Check if there's a link at or near the given point within the element's children
     /// This searches the accessibility tree for AXLink elements
     func hasLinkAtPoint(_ element: AXUIElement, point: CGPoint, depth: Int) -> Bool {
         // Limit recursion depth
         guard depth < 15 else { return false }
-        
+
         let role = getRole(of: element)
-        
+
         // Log at shallow depths
         if depth < 4 {
             let childCount = getChildren(of: element)?.count ?? 0
         }
-        
+
         // Check if this element is a link
         if role == "AXLink" {
             // Check if point is within this element's bounds
@@ -624,12 +624,12 @@ class AutoScrollCore {
                 return true
             }
         }
-        
+
         // Check children
         guard let children = getChildren(of: element), !children.isEmpty else {
             return false
         }
-        
+
         for child in children {
             // Only check children whose bounds might contain the point
             if let frame = getElementFrame(child) {
@@ -649,7 +649,7 @@ class AutoScrollCore {
                 }
             }
         }
-        
+
         return false
     }
 

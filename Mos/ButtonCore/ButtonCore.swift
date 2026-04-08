@@ -9,28 +9,28 @@
 import Cocoa
 
 class ButtonCore {
-    
+
     // 单例
     static let shared = ButtonCore()
     init() { NSLog("Module initialized: ButtonCore") }
-    
+
     // 执行状态
     var isActive = false
-    
+
     // 拦截层
     var eventInterceptor: Interceptor?
 
     // MARK: - Cursor Detection
-    
+
     /// Get the current system cursor image size to detect cursor type
     /// Hand cursor is typically larger than arrow cursor
     @_silgen_name("CGSGetGlobalCursorDataSize")
     static func CGSGetGlobalCursorDataSize(_ connection: Int32, _ size: UnsafeMutablePointer<Int32>) -> Int32
-    
+
     /// Get the default connection
-    @_silgen_name("CGSMainConnectionID") 
+    @_silgen_name("CGSMainConnectionID")
     static func CGSMainConnectionID() -> Int32
-    
+
     /// Get cursor data including image
     @_silgen_name("CGSGetGlobalCursorData")
     static func CGSGetGlobalCursorData(
@@ -44,38 +44,38 @@ class ButtonCore {
         _ components: UnsafeMutablePointer<Int32>,
         _ bitsPerComponent: UnsafeMutablePointer<Int32>
     ) -> Int32
-    
+
     // Store known cursor characteristics
     // Arrow cursor: hotspot ~(5, 5), rect ~(28, 40)
     // Hand cursor: hotspot ~(13, 8), rect ~(32, 32)
     static var arrowCursorHotspot: CGPoint = CGPoint(x: 5, y: 5)
     static var arrowCursorRect: CGRect = CGRect(x: 0, y: 0, width: 28, height: 40)
     static var isCalibrated = false
-    
+
     /// Check if the current cursor is a pointing hand
     /// Hand cursor has different hotspot than arrow (finger tip vs corner)
     static func isPointingHandCursor() -> Bool {
         let connection = CGSMainConnectionID()
         var size: Int32 = 0
-        
+
         guard CGSGetGlobalCursorDataSize(connection, &size) == 0, size > 0 else {
             return false
         }
-        
+
         var rowBytes: Int32 = 0
         var rect = CGRect.zero
         var hotspot = CGPoint.zero
         var depth: Int32 = 0
         var components: Int32 = 0
         var bitsPerComponent: Int32 = 0
-        
+
         let data = UnsafeMutableRawPointer.allocate(byteCount: Int(size), alignment: 1)
         defer { data.deallocate() }
-        
+
         guard CGSGetGlobalCursorData(connection, data, &size, &rowBytes, &rect, &hotspot, &depth, &components, &bitsPerComponent) == 0 else {
             return false
         }
-        
+
         // Auto-calibrate if this looks like an arrow cursor
         let looksLikeArrow = hotspot.x < 8 && hotspot.y < 8
         if looksLikeArrow {
@@ -86,22 +86,22 @@ class ButtonCore {
             }
             return false
         }
-        
+
         if !isCalibrated {
             isCalibrated = true
         }
-        
+
         // Hand cursor signature: hotspot=(13, 8), rect=(32, 32)
         let hotspotMatchesHand = hotspot.x > 10 && hotspot.y >= 6 && hotspot.y <= 10
         let rectIsSquare = abs(rect.width - rect.height) < 5
         let rectIsRightSize = rect.width >= 30 && rect.width <= 34
-        
+
         let looksLikeHand = hotspotMatchesHand && rectIsSquare && rectIsRightSize
-        
+
         if looksLikeHand {
             return true
         }
-        
+
         return false
     }
 
@@ -196,11 +196,11 @@ class ButtonCore {
             switch type {
             case .otherMouseDown:
                 let browserInfo = AutoScrollCore.shared.getBrowserWindowInfo(at: location)
-                
-                
+
+
                 // CURSOR DETECTION: Check if mouse is over a clickable element (link, button)
                 var isOverClickable = false
-                
+
                 if Thread.isMainThread {
                     isOverClickable = ButtonCore.isPointingHandCursor()
                 } else {
@@ -208,13 +208,13 @@ class ButtonCore {
                         isOverClickable = ButtonCore.isPointingHandCursor()
                     }
                 }
-                
-                
+
+
                 if isOverClickable {
                     // Don't start auto-scroll, let browser handle the link click
                     return Unmanaged.passUnretained(event)
                 }
-                
+
                 if browserInfo.isBrowser && !browserInfo.isInUIArea {
                     // Browser content area, NOT over a link - start auto-scroll
                     AutoScrollCore.shared.handleMiddleButtonDown(at: location)
@@ -237,15 +237,15 @@ class ButtonCore {
                         isOverClickable = ButtonCore.isPointingHandCursor()
                     }
                 }
-                
+
                 if isOverClickable {
                     return Unmanaged.passUnretained(event)
                 }
-                
+
                 let wasHandled = AutoScrollCore.shared.handleMiddleButtonUp(at: location)
-                
+
                 // Check if we're in a browser
-                let browserInfo = AutoScrollCore.shared.getBrowserWindowInfo(at: location)                
+                let browserInfo = AutoScrollCore.shared.getBrowserWindowInfo(at: location)
                 if wasHandled || AutoScrollCore.shared.isActive {
                     return nil  // Consume event (non-browser apps)
                 }
@@ -285,9 +285,9 @@ class ButtonCore {
             return Unmanaged.passUnretained(event)
         }
     }
-    
+
     // MARK: - 启用和禁用
-    
+
     // 启用按钮监控
     func enable() {
         if !isActive {
@@ -306,7 +306,7 @@ class ButtonCore {
             }
         }
     }
-    
+
     // 禁用按钮监控
     func disable() {
         if isActive {
@@ -317,7 +317,7 @@ class ButtonCore {
             isActive = false
         }
     }
-    
+
     // 切换状态
     func toggle() {
         isActive ? disable() : enable()
