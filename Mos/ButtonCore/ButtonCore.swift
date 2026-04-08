@@ -197,7 +197,6 @@ class ButtonCore {
             case .otherMouseDown:
                 let browserInfo = AutoScrollCore.shared.getBrowserWindowInfo(at: location)
 
-
                 // CURSOR DETECTION: Check if mouse is over a clickable element (link, button)
                 var isOverClickable = false
 
@@ -208,7 +207,6 @@ class ButtonCore {
                         isOverClickable = ButtonCore.isPointingHandCursor()
                     }
                 }
-
 
                 if isOverClickable {
                     // Don't start auto-scroll, let browser handle the link click
@@ -244,8 +242,6 @@ class ButtonCore {
 
                 let wasHandled = AutoScrollCore.shared.handleMiddleButtonUp(at: location)
 
-                // Check if we're in a browser
-                let browserInfo = AutoScrollCore.shared.getBrowserWindowInfo(at: location)
                 if wasHandled || AutoScrollCore.shared.isActive {
                     return nil  // Consume event (non-browser apps)
                 }
