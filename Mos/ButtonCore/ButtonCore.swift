@@ -9,14 +9,14 @@
 import Cocoa
 
 class ButtonCore {
-
+    
     // 单例
     static let shared = ButtonCore()
     init() { NSLog("Module initialized: ButtonCore") }
-
+    
     // 执行状态
     var isActive = false
-
+    
     // 拦截层
     var eventInterceptor: Interceptor?
 
@@ -281,9 +281,9 @@ class ButtonCore {
             return Unmanaged.passUnretained(event)
         }
     }
-
+    
     // MARK: - 启用和禁用
-
+    
     // 启用按钮监控
     func enable() {
         if !isActive {
@@ -302,7 +302,7 @@ class ButtonCore {
             }
         }
     }
-
+    
     // 禁用按钮监控
     func disable() {
         if isActive {
@@ -313,7 +313,7 @@ class ButtonCore {
             isActive = false
         }
     }
-
+    
     // 切换状态
     func toggle() {
         isActive ? disable() : enable()

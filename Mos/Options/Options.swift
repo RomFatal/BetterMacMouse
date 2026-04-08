@@ -60,17 +60,17 @@ struct OptionItem {
 }
 
 class Options {
-
+    
     // 单例
     static let shared = Options()
     init() { NSLog("Module initialized: Options") }
-
+    
     // 读取锁, 防止冲突
     private var readingOptionsLock = false
-    // JSON 编解码工具
+    // JSON 解码工具
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
-
+    
     // 常规
     var general = OPTIONS_GENERAL_DEFAULT()
     // 更新
@@ -97,7 +97,7 @@ class Options {
  * 读取和写入
  **/
 extension Options {
-
+    
     // 从 UserDefaults 中读取到 currentOptions
     func readOptions() {
         // 配置项如果不存在则尝试用当前设置(默认设置)保存一次
@@ -163,7 +163,7 @@ extension Options {
         // 解锁
         readingOptionsLock = false
     }
-
+    
     // 写入到 UserDefaults
     func saveOptions() {
         if !readingOptionsLock {
