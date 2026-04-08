@@ -82,7 +82,6 @@ class ButtonCore {
             arrowCursorHotspot = hotspot
             arrowCursorRect = rect
             if !isCalibrated {
-                NSLog("[ButtonCore] ✅ Calibrated arrow: hotspot=\(hotspot), rect=\(rect)")
                 isCalibrated = true
             }
             return false
@@ -100,14 +99,11 @@ class ButtonCore {
         let looksLikeHand = hotspotMatchesHand && rectIsSquare && rectIsRightSize
         
         if looksLikeHand {
-            NSLog("[ButtonCore] 👆 Hand cursor detected: hotspot=\(hotspot), rect=\(rect)")
             return true
         }
         
         return false
     }
-
-
 
     // 组合的按钮事件掩码
     let leftDown = CGEventMask(1 << CGEventType.leftMouseDown.rawValue)
@@ -195,72 +191,32 @@ class ButtonCore {
 
         let location = convertToScreenCoordinates(cgLocation)
 
-        // DEBUG: Log every middle button event to file
-        if buttonNumber == 2 {
-            let mainScreenHeight = NSScreen.main?.frame.height ?? 0
-            var log = "[\(Date())] Middle button: type=\(type.rawValue), btn=\(buttonNumber), activationBtn=\(Options.shared.autoScroll.activationButton), isEnabled=\(AutoScrollCore.shared.isEnabled)\n"
-            log += "  Main screen height: \(mainScreenHeight)\n"
-            log += "  CGEvent location (Quartz): (\(cgLocation.x), \(cgLocation.y))\n"
-            log += "  Converted location (Cocoa): (\(location.x), \(location.y))\n"
-            log += "  NSEvent.mouseLocation NOW: \(NSEvent.mouseLocation)\n"
-
-            if let fileHandle = FileHandle(forWritingAtPath: "/tmp/mos_button_debug.txt") {
-                fileHandle.seekToEndOfFile()
-                if let data = log.data(using: .utf8) {
-                    fileHandle.write(data)
-                }
-                fileHandle.closeFile()
-            } else {
-                try? log.write(toFile: "/tmp/mos_button_debug.txt", atomically: false, encoding: .utf8)
-            }
-
-            NSLog("[ButtonCore] Middle button event: type=\(type.rawValue), btn=\(buttonNumber), location=\(location)")
-        }
-
         // 处理自动滚动相关事件
         if buttonNumber == Options.shared.autoScroll.activationButton {
-            let matchLog = "Button matches activationButton (\(Options.shared.autoScroll.activationButton))\n"
-            if let fileHandle = FileHandle(forWritingAtPath: "/tmp/mos_button_debug.txt") {
-                fileHandle.seekToEndOfFile()
-                if let data = matchLog.data(using: .utf8) {
-                    fileHandle.write(data)
-                }
-                fileHandle.closeFile()
-            }
-
             switch type {
             case .otherMouseDown:
                 let browserInfo = AutoScrollCore.shared.getBrowserWindowInfo(at: location)
                 
-                NSLog("[ButtonCore] ========== MIDDLE BUTTON DOWN ==========")
-                NSLog("[ButtonCore] Browser: \(browserInfo.isBrowser), inUI: \(browserInfo.isInUIArea)")
                 
                 // CURSOR DETECTION: Check if mouse is over a clickable element (link, button)
                 var isOverClickable = false
                 
-                NSLog("[ButtonCore] About to check cursor...")
                 if Thread.isMainThread {
-                    NSLog("[ButtonCore] On main thread, calling isPointingHandCursor()")
                     isOverClickable = ButtonCore.isPointingHandCursor()
                 } else {
-                    NSLog("[ButtonCore] NOT on main thread, dispatching to main")
                     DispatchQueue.main.sync {
-                        NSLog("[ButtonCore] Now on main thread, calling isPointingHandCursor()")
                         isOverClickable = ButtonCore.isPointingHandCursor()
                     }
                 }
                 
-                NSLog("[ButtonCore] Cursor check result: isOverClickable = \(isOverClickable)")
                 
                 if isOverClickable {
-                    NSLog("[ButtonCore] 👆 Pointing hand cursor detected - passing through for link click")
                     // Don't start auto-scroll, let browser handle the link click
                     return Unmanaged.passUnretained(event)
                 }
                 
                 if browserInfo.isBrowser && !browserInfo.isInUIArea {
                     // Browser content area, NOT over a link - start auto-scroll
-                    NSLog("[ButtonCore] Browser content area, not over link - starting auto-scroll")
                     AutoScrollCore.shared.handleMiddleButtonDown(at: location)
                     return nil  // Consume event since we're handling it
                 }
@@ -283,7 +239,6 @@ class ButtonCore {
                 }
                 
                 if isOverClickable {
-                    NSLog("[ButtonCore] 👆 Pointing hand cursor on UP - passing through")
                     return Unmanaged.passUnretained(event)
                 }
                 
@@ -313,7 +268,6 @@ class ButtonCore {
                 AutoScrollCore.shared.stopAutoScroll()
             }
         }
-
 
         // 使用原始 flags 匹配绑定 (不注入虚拟修饰键, 保证匹配准确)
         let mosEvent = MosInputEvent(fromCGEvent: event)
