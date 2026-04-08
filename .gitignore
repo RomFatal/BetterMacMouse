@@ -7,31 +7,16 @@ website/out
 # macOS
 .DS_Store
 
-# Xcode
+# XCode
 xcuserdata
 *.xcuserstate
 *.xcuserdated
-*.xcworkspace/xcshareddata
-build/
-DerivedData/
-*.pbxuser
-*.mode1v3
-*.mode2v3
-*.perspectivev3
-*.xccheckout
-*.moved-aside
-*.hmap
-*.ipa
-*.dSYM.zip
-*.dSYM
-*.backup
-.swiftpm/
-.build/
 
 # Sparkle signing keys (keep private!)
 sparkle_private_key.txt
 
 # build
 build/*.zip
+/build
 /spec
 .superpowers/
