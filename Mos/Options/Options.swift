@@ -67,7 +67,7 @@ class Options {
     
     // 读取锁, 防止冲突
     private var readingOptionsLock = false
-    // JSON 解码工具
+    // JSON 编解码工具
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
     
