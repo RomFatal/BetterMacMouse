@@ -2,6 +2,7 @@
 website/.idea
 website/.next
 website/node_modules
+website/out
 
 # macOS
 .DS_Store
@@ -26,3 +27,11 @@ DerivedData/
 *.backup
 .swiftpm/
 .build/
+
+# Sparkle signing keys (keep private!)
+sparkle_private_key.txt
+
+# build
+build/*.zip
+/spec
+.superpowers/

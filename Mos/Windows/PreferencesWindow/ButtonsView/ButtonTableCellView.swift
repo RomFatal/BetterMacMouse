@@ -1,5 +1,5 @@
 //
-//  ButtonTableCellView 2.swift
+//  ButtonTableCellView.swift
 //  Mos
 //
 //  Created by 陈标 on 2025/9/27.
@@ -22,6 +22,15 @@ class ButtonTableCellView: NSTableCellView, NSMenuDelegate {
     // MARK: - Callbacks
     private var onShortcutSelected: ((SystemShortcut.Shortcut?) -> Void)?
     private var onDeleteRequested: (() -> Void)?
+    private var onCustomShortcutRecorded: ((String) -> Void)?
+    private var currentCustomName: String?
+
+    // MARK: - Custom Recording
+    private lazy var customRecorder: KeyRecorder = {
+        let recorder = KeyRecorder()
+        recorder.delegate = self
+        return recorder
+    }()
 
     // MARK: - Data (只用于UI显示)
     private var currentShortcut: SystemShortcut.Shortcut?
@@ -31,12 +40,17 @@ class ButtonTableCellView: NSTableCellView, NSMenuDelegate {
     func configure(
         with binding: ButtonBinding,
         onShortcutSelected: @escaping (SystemShortcut.Shortcut?) -> Void,
+        onCustomShortcutRecorded: @escaping (String) -> Void,
         onDeleteRequested: @escaping () -> Void
     ) {
         // 保存回调
         self.onShortcutSelected = onShortcutSelected
         self.onDeleteRequested = onDeleteRequested
+        self.onCustomShortcutRecorded = onCustomShortcutRecorded
+        // 清理可能残留的录制状态 (cell 复用时)
+        customRecorder.stopRecording()
         self.currentShortcut = binding.systemShortcut
+        self.currentCustomName = binding.isCustomBinding ? binding.systemShortcutName : nil
 
         // 保存原始背景色（首次或复用时）
         if originalRowBackgroundColor == nil, let rowView = self.superview as? NSTableRowView {
@@ -46,8 +60,11 @@ class ButtonTableCellView: NSTableCellView, NSMenuDelegate {
         // 配置按键显示组件
         setupKeyDisplayView(with: binding.triggerEvent)
 
+        // 判断是否为 Logi 按键 (code >= 1000)
+        let isLogiTrigger = binding.triggerEvent.type == .mouse && LogitechCIDRegistry.isLogitechCode(binding.triggerEvent.code)
+
         // 配置动作选择器
-        setupActionPopUpButton(currentShortcut: binding.systemShortcut)
+        setupActionPopUpButton(currentShortcut: binding.systemShortcut, showLogiActions: isLogiTrigger)
 
         // 绘制虚线分隔符(延迟到下一个 runloop,等 AutoLayout 完成布局)
         DispatchQueue.main.async {
@@ -151,7 +168,7 @@ class ButtonTableCellView: NSTableCellView, NSMenuDelegate {
     /// 1. 每次配置创建新的 NSMenu 实例，避免 cell 复用时共享状态
     /// 2. 默认禁用所有菜单项的 keyEquivalent，防止与 ButtonCore 触发的快捷键冲突
     /// 3. 通过 NSMenuDelegate 在菜单打开时临时启用 keyEquivalent（显示快捷键样式）
-    private func setupActionPopUpButton(currentShortcut: SystemShortcut.Shortcut?) {
+    private func setupActionPopUpButton(currentShortcut: SystemShortcut.Shortcut?, showLogiActions: Bool = false) {
         // 每次配置时创建新的 menu，避免 cell 复用时共享状态
         let menu = NSMenu()
         menu.delegate = self
@@ -160,7 +177,8 @@ class ButtonTableCellView: NSTableCellView, NSMenuDelegate {
         ShortcutManager.buildShortcutMenu(
             into: menu,
             target: self,
-            action: #selector(shortcutSelected(_:))
+            action: #selector(shortcutSelected(_:)),
+            showLogiActions: showLogiActions
         )
 
         // 初始状态禁用所有 keyEquivalent，防止意外触发
@@ -173,6 +191,8 @@ class ButtonTableCellView: NSTableCellView, NSMenuDelegate {
         // 设置当前选择
         if let shortcut = currentShortcut {
             selectShortcutInMenu(shortcut)
+        } else if let customName = currentCustomName, customName.hasPrefix("custom::") {
+            displayCustomBinding(customName)
         } else {
             setPlaceholderToUnbound()
         }
@@ -212,9 +232,10 @@ class ButtonTableCellView: NSTableCellView, NSMenuDelegate {
         // 更新占位符的标题为选中的快捷键
         placeholderItem.title = title
 
-        // 更新占位符的图标 (如果有)
-        // NSPopUpButton 中图标和文本间距较紧,需要添加右侧边距
-        if let originalImage = image {
+        // 品牌动作: 在图标前添加品牌 tag
+        if let brand = BrandTag.brandForAction(currentShortcut?.identifier ?? "") {
+            placeholderItem.image = BrandTag.createPrefixedImage(brand: brand, original: image)
+        } else if let originalImage = image {
             placeholderItem.image = createImageWithTrailingSpace(originalImage)
         } else {
             placeholderItem.image = nil
@@ -254,10 +275,152 @@ class ButtonTableCellView: NSTableCellView, NSMenuDelegate {
         setCustomTitle(NSLocalizedString("unbound", comment: ""), image: nil)
     }
 
+    // MARK: - Custom Recording Helpers
+
+    private func startCustomRecording() {
+        customRecorder.startRecording(from: actionPopUpButton, mode: .adaptive)
+    }
+
+    /// 显示自定义绑定 (从 custom:: 字符串解析)
+    private func displayCustomBinding(_ customName: String) {
+        let parts = customName.dropFirst(8).split(separator: ":")
+        guard parts.count == 2,
+              let code = UInt16(parts[0]),
+              let mods = UInt64(parts[1]) else {
+            setPlaceholderToUnbound()
+            return
+        }
+
+        // 构造 MosInputEvent 以复用 displayComponents 统一格式
+        let mosEvent = MosInputEvent(
+            type: KeyCode.modifierKeys.contains(code) ? .keyboard : (code >= 0x100 ? .mouse : .keyboard),
+            code: code,
+            modifiers: CGEventFlags(rawValue: mods),
+            phase: .down,
+            source: .hidPlusPlus,
+            device: nil
+        )
+        let badgeImage = createBadgeImage(from: mosEvent.displayComponents)
+        setCustomTitle("", image: badgeImage)
+    }
+
+    /// 将 displayComponents 渲染为 badge 风格的图片 (与 KeyPreview 视觉一致)
+    /// 使用 NSImage drawingHandler, 每次绘制时执行, 自动响应 Dark/Light 模式切换
+    private func createBadgeImage(from components: [String]) -> NSImage {
+        // 紧凑尺寸: 适配 PopUpButton 行高
+        let fontSize: CGFloat = 9
+        let font = NSFont.systemFont(ofSize: fontSize, weight: .medium)
+        let plusFont = NSFont.systemFont(ofSize: fontSize)
+        let badgeHeight: CGFloat = 17
+        let cornerRadius: CGFloat = 3
+        let hPadding: CGFloat = 5
+        let plusSpacing: CGFloat = 3
+        let iconSize: CGFloat = 11
+        let iconTrailingGap: CGFloat = 4
+
+        // 预计算每个 badge 和总尺寸
+        struct BadgeMetrics {
+            let text: String
+            let textSize: NSSize
+            let badgeWidth: CGFloat
+        }
+        var badges: [BadgeMetrics] = []
+        var totalWidth: CGFloat = 0
+
+        for (i, component) in components.enumerated() {
+            let attrs: [NSAttributedString.Key: Any] = [.font: font]
+            let textSize = (component as NSString).size(withAttributes: attrs)
+            let badgeWidth = max(textSize.width + hPadding * 2, badgeHeight)
+            badges.append(BadgeMetrics(text: component, textSize: textSize, badgeWidth: badgeWidth))
+            totalWidth += badgeWidth
+            if i > 0 {
+                let plusSize = ("+" as NSString).size(withAttributes: [.font: plusFont])
+                totalWidth += plusSpacing * 2 + plusSize.width
+            }
+        }
+
+        // 前置 keyboard 图标的空间
+        var iconWidth: CGFloat = 0
+        if #available(macOS 11.0, *) {
+            iconWidth = iconSize + iconTrailingGap
+        }
+        totalWidth += iconWidth
+
+        let imageSize = NSSize(width: ceil(totalWidth) + 6, height: badgeHeight)
+        return NSImage(size: imageSize, flipped: false) { _ in
+            var x: CGFloat = 0
+
+            // 绘制 keyboard 图标 (用 sourceAtop 合成着色, 适配 Dark/Light 模式)
+            if #available(macOS 11.0, *),
+               let symbol = NSImage(systemSymbolName: "keyboard", accessibilityDescription: nil) {
+                let config = NSImage.SymbolConfiguration(pointSize: iconSize, weight: .regular)
+                let configured = symbol.withSymbolConfiguration(config) ?? symbol
+                let symbolSize = configured.size
+                let iconY = (badgeHeight - symbolSize.height) / 2
+                let iconRect = NSRect(x: x, y: iconY, width: symbolSize.width, height: symbolSize.height)
+                configured.draw(in: iconRect)
+                NSColor.secondaryLabelColor.set()
+                iconRect.fill(using: .sourceAtop)
+                x += symbolSize.width + iconTrailingGap
+            }
+
+            let bgColor = Utils.isDarkMode(for: nil)
+                ? NSColor(calibratedWhite: 0.5, alpha: 0.2)
+                : NSColor(calibratedWhite: 0.0, alpha: 0.1)
+            let textColor = NSColor.labelColor
+
+            for (i, badge) in badges.enumerated() {
+                // "+" 分隔符
+                if i > 0 {
+                    let plusAttrs: [NSAttributedString.Key: Any] = [
+                        .font: plusFont,
+                        .foregroundColor: NSColor.secondaryLabelColor,
+                    ]
+                    let plusSize = ("+" as NSString).size(withAttributes: plusAttrs)
+                    x += plusSpacing
+                    let plusY = (badgeHeight - plusSize.height) / 2
+                    ("+" as NSString).draw(at: NSPoint(x: x, y: plusY), withAttributes: plusAttrs)
+                    x += plusSize.width + plusSpacing
+                }
+
+                // Badge 背景
+                let badgeRect = NSRect(x: x, y: 0, width: badge.badgeWidth, height: badgeHeight)
+                let path = NSBezierPath(roundedRect: badgeRect, xRadius: cornerRadius, yRadius: cornerRadius)
+                bgColor.setFill()
+                path.fill()
+
+                // Badge 文字
+                let textAttrs: [NSAttributedString.Key: Any] = [
+                    .font: font,
+                    .foregroundColor: textColor,
+                ]
+                let textX = x + (badge.badgeWidth - badge.textSize.width) / 2
+                let textY = (badgeHeight - badge.textSize.height) / 2
+                (badge.text as NSString).draw(at: NSPoint(x: textX, y: textY), withAttributes: textAttrs)
+
+                x += badge.badgeWidth
+            }
+            return true
+        }
+    }
+
     // MARK: - Actions
 
     /// 快捷键选择回调
     @objc private func shortcutSelected(_ sender: NSMenuItem) {
+        // 自定义录制: action 在 menuDidClose 之后触发,
+        // 直接 asyncAfter 等待菜单动画和焦点恢复后弹出录制弹窗
+        if sender.representedObject as? String == "__custom__" {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
+                guard let self = self, self.window != nil else { return }
+                self.startCustomRecording()
+            }
+            return
+        }
+
+        // 清除自定义绑定状态
+        self.currentCustomName = nil
+
         // representedObject 为 nil 时表示用户选择了"未绑定"
         let shortcut = sender.representedObject as? SystemShortcut.Shortcut
 
@@ -275,6 +438,11 @@ class ButtonTableCellView: NSTableCellView, NSMenuDelegate {
 
         // 通知外部更新(nil 表示清除绑定)
         onShortcutSelected?(shortcut)
+
+        // 延迟重绘虚线 (等待 PopUpButton 布局更新)
+        DispatchQueue.main.async {
+            self.setupDashedLine()
+        }
     }
 
     /// 删除绑定
@@ -319,7 +487,9 @@ extension ButtonTableCellView {
         let firstSeparator = menu.items[1]   // 第一条分割线
         let unboundItem = menu.items[2]      // "未绑定"/"取消绑定"菜单项
 
-        if currentShortcut == nil {
+        let hasBoundAction = currentShortcut != nil || currentCustomName != nil
+
+        if !hasBoundAction {
             // 当前是未绑定状态:隐藏占位符和第一条分割线,显示"未绑定"
             placeholderItem.isHidden = true
             firstSeparator.isHidden = true
@@ -357,5 +527,31 @@ extension ButtonTableCellView {
                 disableKeyEquivalents(in: submenu)
             }
         }
+    }
+}
+
+// MARK: - KeyRecorderDelegate (Custom Recording)
+extension ButtonTableCellView: KeyRecorderDelegate {
+    func onEventRecorded(_ recorder: KeyRecorder, didRecordEvent event: MosInputEvent, isDuplicate: Bool) {
+        guard !isDuplicate else { return }
+        let code = event.code
+        let modifiers = UInt64(event.modifiers.rawValue)
+        let customName = "custom::\(code):\(modifiers)"
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.66) { [weak self] in
+            guard let self = self else { return }
+            self.currentShortcut = nil
+            self.currentCustomName = customName
+            self.displayCustomBinding(customName)
+            self.onCustomShortcutRecorded?(customName)
+            // 重绘虚线
+            DispatchQueue.main.async {
+                self.setupDashedLine()
+            }
+        }
+    }
+
+    func validateRecordedEvent(_ recorder: KeyRecorder, event: MosInputEvent) -> Bool {
+        return true
     }
 }

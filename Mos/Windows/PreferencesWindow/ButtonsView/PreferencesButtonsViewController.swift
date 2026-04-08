@@ -71,9 +71,12 @@ extension PreferencesButtonsViewController {
         toggleNoDataHint()
     }
 
-    // 保存界面到 Options
+    // 保存界面到 Options, 并同步 divert 状态
     func syncViewWithOptions() {
         Options.shared.buttons.binding = buttonBindings
+        ButtonUtils.shared.invalidateCache()
+        // 绑定变更后同步 HID++ divert: 只 divert 有绑定的按键
+        LogitechHIDManager.shared.syncDivertWithBindings()
     }
 
     // 更新删除按钮状态
@@ -88,11 +91,9 @@ extension PreferencesButtonsViewController {
         }
     }
     
-    // 添加录制事件到列表
-    private func addRecordedEvent(_ event: CGEvent, isDuplicate: Bool) {
+    private func addRecordedEvent(_ event: MosInputEvent, isDuplicate: Bool) {
         let recordedEvent = RecordedEvent(from: event)
 
-        // 如果是重复录制,高亮已存在行
         if isDuplicate {
             if let existing = buttonBindings.first(where: { $0.triggerEvent == recordedEvent }) {
                 highlightExistingRow(with: existing.id)
@@ -100,7 +101,6 @@ extension PreferencesButtonsViewController {
             return
         }
 
-        // 新录制的事件不设置默认快捷键，等待用户选择
         let binding = ButtonBinding(triggerEvent: recordedEvent, systemShortcutName: "", isEnabled: false)
         buttonBindings.append(binding)
         tableView.reloadData()
@@ -157,6 +157,20 @@ extension PreferencesButtonsViewController {
         buttonBindings[index] = updatedBinding
         syncViewWithOptions()
     }
+
+    /// 更新按钮绑定 (自定义快捷键)
+    func updateButtonBinding(id: UUID, withCustomName name: String) {
+        guard let index = buttonBindings.firstIndex(where: { $0.id == id }) else { return }
+        let old = buttonBindings[index]
+        buttonBindings[index] = ButtonBinding(
+            id: old.id,
+            triggerEvent: old.triggerEvent,
+            systemShortcutName: name,
+            isEnabled: true,
+            createdAt: old.createdAt
+        )
+        syncViewWithOptions()
+    }
 }
 
 /**
@@ -188,6 +202,9 @@ extension PreferencesButtonsViewController: NSTableViewDelegate, NSTableViewData
                 with: binding,
                 onShortcutSelected: { [weak self] shortcut in
                     self?.updateButtonBinding(id: binding.id, with: shortcut)
+                },
+                onCustomShortcutRecorded: { [weak self] customName in
+                    self?.updateButtonBinding(id: binding.id, withCustomName: customName)
                 },
                 onDeleteRequested: { [weak self] in
                     self?.removeButtonBinding(id: binding.id)
@@ -226,16 +243,12 @@ extension PreferencesButtonsViewController: NSTableViewDelegate, NSTableViewData
 
 // MARK: - EventRecorderDelegate
 extension PreferencesButtonsViewController: KeyRecorderDelegate {
-    // 验证录制的事件是否重复
-    func validateRecordedEvent(_ recorder: KeyRecorder, event: CGEvent) -> Bool {
+    func validateRecordedEvent(_ recorder: KeyRecorder, event: MosInputEvent) -> Bool {
         let recordedEvent = RecordedEvent(from: event)
-        // 返回 true = 新录制(绿色), false = 重复(蓝色)
         return !buttonBindings.contains(where: { $0.triggerEvent == recordedEvent })
     }
 
-    // Record 回调 (isDuplicate 由 KeyRecorder 传递,避免重复验证)
-    func onEventRecorded(_ recorder: KeyRecorder, didRecordEvent event: CGEvent, isDuplicate: Bool) {
-        // 添加延迟后调用, 确保不要太早消失
+    func onEventRecorded(_ recorder: KeyRecorder, didRecordEvent event: MosInputEvent, isDuplicate: Bool) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.66) { [weak self] in
             self?.addRecordedEvent(event, isDuplicate: isDuplicate)
         }

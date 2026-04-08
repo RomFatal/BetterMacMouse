@@ -3,8 +3,14 @@
   "strings" : {
     "1LK-nr-g7N.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⌥ Option\"; ObjectID = \"1LK-nr-g7N\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌥ Option"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20,6 +26,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⌥ Option"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⌥ Option"
           }
         },
@@ -83,6 +95,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"After the update, macOS sometimes fails to authorize correctly.\\nRemove Mos from the list first, and then re-add Mos to authorize. (You can also drag the icon above directly)\"; ObjectID = \"1su-Cm-MUc\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Po aktualizaci systému macOS se někdy může stát, že autorizace není rozpoznána.\nOdeberte Mos ze seznamu a poté jej znovu přidejte. (Ikonu můžete také přetáhnout přímo.)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -99,6 +117,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "After the update, macOS sometimes fails to authorize correctly.\nRemove Mos from the list first, and then re-add Mos to authorize. (You can also drag the icon above directly)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Après la mise à jour, macOS échoue parfois à autoriser correctement l’application.\nRetirez d’abord Mos de la liste, puis ajoutez-la de nouveau pour l’autoriser.\n(Vous pouvez aussi faire glisser l’icône ci-dessus directement.)"
           }
         },
         "ja" : {
@@ -161,6 +185,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Mos\"; ObjectID = \"2AK-Pu-mot\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mos"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -176,6 +206,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Mos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Mos"
           }
         },
@@ -235,10 +271,34 @@
         }
       }
     },
+    "2dJ-u6-vHd.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Disabled\"; ObjectID = \"2dJ-u6-vHd\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vypnuto"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Disabled"
+          }
+        }
+      }
+    },
     "2hV-f7-8yO.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Customize mouse buttons to enhance your experience\"; ObjectID = \"2hV-f7-8yO\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přizpůsobte si tlačítka myši pro pohodlnější ovládání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -255,6 +315,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Customize mouse buttons to enhance your experience"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnalisez les boutons de souris pour améliorer votre expérience"
           }
         },
         "ja" : {
@@ -317,6 +383,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Andrew Mclaren(@mclvren)\"; ObjectID = \"2v8-3K-NkQ\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Andrew Mclaren(@mclvren)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -332,6 +404,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Andrew Mclaren(@mclvren)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Andrew Mclaren(@mclvren)"
           }
         },
@@ -395,6 +473,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Just some little job for your mouse.\"; ObjectID = \"5cx-xS-eRe\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Malý praktický nástroj pro vaší myš."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -411,6 +495,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Just some little job for your mouse."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un petit job pour votre souris."
           }
         },
         "ja" : {
@@ -473,6 +563,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Korean\"; ObjectID = \"5Yv-xg-jrn\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Korejština"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -489,6 +585,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Korean"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coréen"
           }
         },
         "ja" : {
@@ -551,6 +653,12 @@
       "comment" : "Class = \"NSTableColumn\"; headerCell.title = \"Scrolling\"; ObjectID = \"8By-V1-U9w\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posouvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -567,6 +675,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Scrolling"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Défilement"
           }
         },
         "ja" : {
@@ -615,8 +729,14 @@
     },
     "8GX-j2-4nN.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⌃ Control\"; ObjectID = \"8GX-j2-4nN\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌃ Control"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -632,6 +752,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⌃ Control"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⌃ Control"
           }
         },
@@ -694,6 +820,12 @@
     "11f-uB-gEM.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Introducting\"; ObjectID = \"11f-uB-gEM\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Představujeme"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -710,6 +842,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Introducing"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Découvrez"
           }
         },
         "ja" : {
@@ -770,8 +908,14 @@
     },
     "18C-IE-EKk.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⌘ Command\"; ObjectID = \"18C-IE-EKk\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘ Command"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -787,6 +931,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⌘ Command"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⌘ Command"
           }
         },
@@ -850,6 +1000,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Application\"; ObjectID = \"89F-B4-NIY\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikace"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -865,6 +1021,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Application"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Application"
           }
         },
@@ -928,6 +1090,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"GitHub\"; ObjectID = \"99M-8D-HLN\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GitHub"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -943,6 +1111,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "GitHub"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "GitHub"
           }
         },
@@ -1006,6 +1180,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Contributors\"; ObjectID = \"265-WS-XEd\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přispěvatelé"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1022,6 +1202,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Contributors"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contributeurs"
           }
         },
         "ja" : {
@@ -1084,6 +1270,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Application Name\"; ObjectID = \"a3I-0T-N5a\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Název aplikace"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1100,6 +1292,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Application Name"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom de l’application"
           }
         },
         "ja" : {
@@ -1162,6 +1360,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Button\"; ObjectID = \"AbN-7n-hF7\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tlačítko"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1178,6 +1382,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Button"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bouton"
           }
         },
         "ja" : {
@@ -1240,6 +1450,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Status Bar Icon\"; ObjectID = \"AGU-43-8RD\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona v řádku nabídek"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1256,6 +1472,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Status Bar Icon"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône dans la barre de statut"
           }
         },
         "ja" : {
@@ -1317,6 +1539,12 @@
     "AM8-cj-DnH.title" : {
       "comment" : "Class = \"NSButtonCell\"; title = \"Feed 🍥 a fet MEOW\"; ObjectID = \"AM8-cj-DnH\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nakrmit 🍥 kočičku MEOW"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1333,6 +1561,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Feed 🍥 a pet MEOW"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nourrissez 🍥 un animal MIAOU"
           }
         },
         "ja" : {
@@ -1395,6 +1629,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Donate via PayPal\"; ObjectID = \"aPi-cE-maK\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Darovat přes PayPal"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1411,6 +1651,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Donate via PayPal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donnez via PayPal"
           }
         },
         "ja" : {
@@ -1485,6 +1731,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Current Version\"; ObjectID = \"Aur-fR-tik\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktuální verze"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1501,6 +1753,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Current Version"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version actuelle"
           }
         },
         "ja" : {
@@ -1563,6 +1821,12 @@
       "comment" : "Class = \"NSMenu\"; title = \"Main Menu\"; ObjectID = \"AYu-sK-qS6\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hlavní menu"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1579,6 +1843,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Main Menu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu principal"
           }
         },
         "ja" : {
@@ -1641,6 +1911,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Sets scrolling acceleration\"; ObjectID = \"B3O-iI-E7v\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastaví zrychlení posouvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1657,6 +1933,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Sets scrolling acceleration"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Définir l’accélération du défilement"
           }
         },
         "ja" : {
@@ -1719,6 +2001,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Step\"; ObjectID = \"B8B-hi-x3v\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krok"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1735,6 +2023,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Step"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etape"
           }
         },
         "ja" : {
@@ -1797,6 +2091,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Re-run Mos again to show the hidden Icon\"; ObjectID = \"bB5-2R-9Da\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skrytou ikonu zobrazíte opětovným spuštěním aplikace Mos"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1813,6 +2113,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Re-run Mos again to show the hidden Icon"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relancez Mos pour afficher l’icône masquée"
           }
         },
         "ja" : {
@@ -1875,6 +2181,12 @@
       "comment" : "Class = \"NSViewController\"; title = \"Application\"; ObjectID = \"bga-wG-iim\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikace"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1890,6 +2202,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Application"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Application"
           }
         },
@@ -1953,6 +2271,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Duration\"; ObjectID = \"bqU-Is-gFB\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1969,6 +2293,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Duration"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durée"
           }
         },
         "ja" : {
@@ -2031,6 +2361,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Toggle Key\"; ObjectID = \"bQw-5w-Yv0\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klávesa přepnutí"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2047,6 +2383,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Toggle Key"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touche de bascule"
           }
         },
         "ja" : {
@@ -2109,6 +2451,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Enable seamless scrolling\"; ObjectID = \"bsq-Pe-sDy\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povolit plynulé posouvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2125,6 +2473,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Enable seamless scrolling"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer défilement fluide"
           }
         },
         "ja" : {
@@ -2187,6 +2541,12 @@
       "comment" : "Class = \"NSViewController\"; title = \"Buttons\"; ObjectID = \"BTN-VC-123\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tlačítka"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2203,6 +2563,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Buttons"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boutons"
           }
         },
         "ja" : {
@@ -2263,8 +2629,14 @@
     },
     "c62-LZ-JNT.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⌘ Command\"; ObjectID = \"c62-LZ-JNT\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘ Command"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2280,6 +2652,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⌘ Command"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⌘ Command"
           }
         },
@@ -2343,6 +2721,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Turkish\"; ObjectID = \"Car-A5-sHp\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turečtina"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2359,6 +2743,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Turkish"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turc"
           }
         },
         "ja" : {
@@ -2421,6 +2811,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"You need to re-run Mos to change the settings\"; ObjectID = \"cIk-j1-vYt\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Musíte znovu spustit Mos, aby se projevila změna nastavení"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2437,6 +2833,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "You need to re-run Mos to change the settings"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous devez relancer Mos pour prendre en compte ce paramétrage"
           }
         },
         "ja" : {
@@ -2497,8 +2899,14 @@
     },
     "cTe-aL-0GQ.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Disabled\"; ObjectID = \"cTe-aL-0GQ\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vypnuto"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2515,6 +2923,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Disabled"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactivé"
           }
         },
         "ja" : {
@@ -2577,6 +2991,12 @@
       "comment" : "Class = \"NSWindow\"; title = \"Preferences\"; ObjectID = \"cvF-hf-KVW\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavení"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2593,6 +3013,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Preferences"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Préférences"
           }
         },
         "ja" : {
@@ -2654,6 +3080,12 @@
     "D0v-Oj-ekP.title" : {
       "comment" : "Class = \"NSButtonCell\"; title = \"How fat is the cat ?\"; ObjectID = \"D0v-Oj-ekP\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jak tlustá je tato kočka?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2670,6 +3102,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How fat is this cat?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A quel point ce chat est gros ?"
           }
         },
         "ja" : {
@@ -2732,6 +3170,12 @@
       "comment" : "Class = \"NSMenuItem\"; title = \"Manually Select From Finder\"; ObjectID = \"dhF-95-kUJ\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruční výběr z Finderu"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2748,6 +3192,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Manually Select From Finder"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sélectionner depuis le Finder"
           }
         },
         "ja" : {
@@ -2808,8 +3258,14 @@
     },
     "dN3-Eq-Xi1.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⌃ Control\"; ObjectID = \"dN3-Eq-Xi1\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌃ Control"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2825,6 +3281,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⌃ Control"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⌃ Control"
           }
         },
@@ -2888,6 +3350,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Create a custom configuration for specific apps\"; ObjectID = \"DS8-og-1pp\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytvořte vlastní konfiguraci pro konkrétní aplikace"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2904,6 +3372,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Create a custom configuration for specific apps"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnalisez la configuration pour des apps spécifiques"
           }
         },
         "ja" : {
@@ -2966,6 +3440,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Sets the duration of the scroll animation\"; ObjectID = \"DsD-EW-zCH\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastaví délku animace posouvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2982,6 +3462,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Sets the duration of the scroll animation"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Définir la durée de l’animation du défilement"
           }
         },
         "ja" : {
@@ -3044,6 +3530,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Allow to access\"; ObjectID = \"DYt-9m-sTf\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povolit přístup"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3060,6 +3552,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Allow to access"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoriser l’accès"
           }
         },
         "ja" : {
@@ -3122,6 +3620,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Startup\"; ObjectID = \"E82-7w-YCr\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spuštění"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3138,6 +3642,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Startup"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Démarrage"
           }
         },
         "ja" : {
@@ -3200,6 +3710,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Block Key\"; ObjectID = \"ebE-Zf-T98\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klávesa blokování"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3216,6 +3732,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Block Key"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touche de blocage"
           }
         },
         "ja" : {
@@ -3278,6 +3800,12 @@
       "comment" : "Class = \"NSMenuItem\"; title = \"No Action\"; ObjectID = \"epU-lS-atX\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žádná Akce"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3294,6 +3822,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "No Action"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune action"
           }
         },
         "ja" : {
@@ -3355,6 +3889,12 @@
     "eVu-TE-yMr.title" : {
       "comment" : "Class = \"NSButtonCell\"; title = \"Horizontal Reverse\"; ObjectID = \"eVu-TE-yMr\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vodorovně"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3371,6 +3911,12 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Horizontal Reverse"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inversion horizontale"
           }
         },
         "ja" : {
@@ -3433,6 +3979,12 @@
       "comment" : "Class = \"NSViewController\"; title = \"Updates\"; ObjectID = \"EWu-DP-7Gj\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualizace"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3449,6 +4001,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Updates"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mises à jour"
           }
         },
         "ja" : {
@@ -3511,6 +4069,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; placeholderString = \"1-10\"; ObjectID = \"Fgm-mm-22Q\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1-10"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3526,6 +4090,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "1-10"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "1-10"
           }
         },
@@ -3589,6 +4159,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"3.00\"; ObjectID = \"Fgm-mm-22Q\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3.00"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3604,6 +4180,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "3.00"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "3.00"
           }
         },
@@ -3667,6 +4249,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Welcome Window\"; ObjectID = \"FIh-fA-18k\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uvítací okno"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3683,6 +4271,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Welcome Window"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fenêtre de bienvenue"
           }
         },
         "ja" : {
@@ -3745,6 +4339,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Assign a button to a specific action\"; ObjectID = \"fXu-uF-M3Q\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přiřaďte tlačítku konkrétní akci"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3761,6 +4361,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Assign a button to a specific action"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assigner un bouton à une action spécifique"
           }
         },
         "ja" : {
@@ -3823,6 +4429,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Russian\"; ObjectID = \"Gct-aO-hq1\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruština"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3839,6 +4451,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Russian"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Russe"
           }
         },
         "ja" : {
@@ -3901,6 +4519,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Speed\"; ObjectID = \"Gcw-Ir-olP\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rychlost"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3917,6 +4541,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Speed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vitesse"
           }
         },
         "ja" : {
@@ -3979,6 +4609,12 @@
       "comment" : "Class = \"NSTableColumn\"; headerCell.title = \"Hotkey\"; ObjectID = \"gd2-WO-uk9\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Horká klávesa"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3995,6 +4631,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Hotkey"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raccourci"
           }
         },
         "ja" : {
@@ -4057,6 +4699,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Add Application\"; ObjectID = \"Gmk-Ru-er7\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidat Aplikaci"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4073,6 +4721,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Add Application"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter Application"
           }
         },
         "ja" : {
@@ -4134,6 +4788,12 @@
     "GtT-zh-x8d.title" : {
       "comment" : "Class = \"NSButtonCell\"; title = \"Vertical Smooth\"; ObjectID = \"GtT-zh-x8d\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Svisle"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4150,6 +4810,12 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Vertical Smooth"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Défilement doux vertical"
           }
         },
         "ja" : {
@@ -4212,6 +4878,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Contributors List\"; ObjectID = \"GWm-aK-UoV\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seznam "
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4228,6 +4900,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Contributors List"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste des contributeurs"
           }
         },
         "ja" : {
@@ -4290,6 +4968,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"German\"; ObjectID = \"gz6-ih-1iJ\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemčina"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4306,6 +4990,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "German"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allemand"
           }
         },
         "ja" : {
@@ -4368,6 +5058,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Scroll Reverse\"; ObjectID = \"H2Z-K0-g9o\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Směr posouvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4384,6 +5080,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Scroll Reverse"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inverser le défilement"
           }
         },
         "ja" : {
@@ -4446,6 +5148,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Hide Status Bar Icon\"; ObjectID = \"hGj-vV-zcY\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skrýt ikonu v řádku nabídek"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4462,6 +5170,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Hide Status Bar Icon"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer l’icône dans la barre des tâches"
           }
         },
         "ja" : {
@@ -4524,6 +5238,12 @@
       "comment" : "Class = \"NSMenuItem\"; title = \"Select an action\"; ObjectID = \"HLn-aB-Grd\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vybrat akci"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4540,6 +5260,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Select an action"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir une action"
           }
         },
         "ja" : {
@@ -4602,6 +5328,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Dash Key\"; ObjectID = \"hOO-M8-I1z\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klávesa zrychlení"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4618,6 +5350,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Dash Key"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touche d’accélération"
           }
         },
         "ja" : {
@@ -4678,8 +5416,14 @@
     },
     "HrY-s6-CCB.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⌃ Control\"; ObjectID = \"HrY-s6-CCB\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌃ Control"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4695,6 +5439,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⌃ Control"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⌃ Control"
           }
         },
@@ -4758,6 +5508,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Wang Yudong(@wyudong)\"; ObjectID = \"I6G-zh-cEt\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wang Yudong(@wyudong)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4773,6 +5529,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Wang Yudong(@wyudong)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Wang Yudong(@wyudong)"
           }
         },
@@ -4836,6 +5598,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Temporarily block smooth scrolling\"; ObjectID = \"iki-Jk-qSr\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dočasně zablokuje plynulé posouvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4852,6 +5620,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Temporarily block smooth scrolling"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquer temporairement le défilement doux"
           }
         },
         "ja" : {
@@ -4914,6 +5688,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \" jrthsr700tmax(@jrthsr700tmax), Crizant(@crizant)\"; ObjectID = \"Imc-rJ-YnM\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " jrthsr700tmax(@jrthsr700tmax), Crizant(@crizant)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4929,6 +5709,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : " jrthsr700tmax(@jrthsr700tmax), Crizant(@crizant)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : " jrthsr700tmax(@jrthsr700tmax), Crizant(@crizant)"
           }
         },
@@ -4992,6 +5778,12 @@
       "comment" : "Class = \"NSViewController\"; title = \"General\"; ObjectID = \"ITL-GD-CPd\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obecné"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5008,6 +5800,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "General"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Général"
           }
         },
         "ja" : {
@@ -5070,6 +5868,12 @@
       "comment" : "Class = \"NSViewController\"; title = \"Scrolling\"; ObjectID = \"iW5-CD-5OC\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posouvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5086,6 +5890,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Scrolling"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Défilement"
           }
         },
         "ja" : {
@@ -5148,6 +5958,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Sets the minimum scroll distance\"; ObjectID = \"Jan-OY-m70\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastaví minimální vzdálenost posunutí"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5164,6 +5980,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Sets the minimum scroll distance"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Définir la distance de défilement minimale"
           }
         },
         "ja" : {
@@ -5226,6 +6048,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Customize individual settings for each app\"; ObjectID = \"jaq-Cb-dKM\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přizpůsobte individuální nastavení pro každou aplikaci"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5242,6 +6070,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Customize individual settings for each app"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser le paramétrage pour chaque app"
           }
         },
         "ja" : {
@@ -5304,10 +6138,22 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Scrolling\"; ObjectID = \"JQK-PN-VMN\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posouvání"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Scrolling"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Défilement"
           }
         },
         "ja" : {
@@ -5328,6 +6174,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Traditional Chinese\"; ObjectID = \"jzQ-oc-Ugr\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tradiční čínština"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5344,6 +6196,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Traditional Chinese"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chinois traditionnel"
           }
         },
         "ja" : {
@@ -5406,6 +6264,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Change vertical scrolling to horizontal scrolling\"; ObjectID = \"KnM-kA-wn5\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Změní svislé posouvání na vodorovné"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5422,6 +6286,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Change vertical scrolling to horizontal scrolling"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remplacer le défilement vertical par le défilement horizontal"
           }
         },
         "ja" : {
@@ -5483,6 +6353,12 @@
     "Ksp-g1-48g.title" : {
       "comment" : "Class = \"NSButtonCell\"; title = \"Allow list Mode\"; ObjectID = \"Ksp-g1-48g\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Režim povolených aplikací"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5499,6 +6375,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Allowlist Mode"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode liste autorisée"
           }
         },
         "ja" : {
@@ -5557,10 +6439,34 @@
         }
       }
     },
+    "Ky0-gH-I3A.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Disabled\"; ObjectID = \"Ky0-gH-I3A\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vypnuto"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Disabled"
+          }
+        }
+      }
+    },
     "l7O-So-nw1.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Record Button\"; ObjectID = \"l7O-So-nw1\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaznamenat tlačítko"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5577,6 +6483,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Record Button"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bouton d’enregistrement"
           }
         },
         "ja" : {
@@ -5639,6 +6551,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Translation\"; ObjectID = \"Lhz-x5-X0I\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Překlad"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5655,6 +6573,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Translation"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traduction"
           }
         },
         "ja" : {
@@ -5717,6 +6641,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"*\"; ObjectID = \"Luy-Tf-2zi\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "*"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5732,6 +6662,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "*"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "*"
           }
         },
@@ -5792,63 +6728,81 @@
       }
     },
     "MI6-Tq-Nev.title" : {
-      "comment" : "Class = \"NSTextFieldCell\"; title = \"© 2017-2025 Caldis. All rights reserved.\"; ObjectID = \"MI6-Tq-Nev\";",
+      "comment" : "Class = \"NSTextFieldCell\"; title = \"© 2017-2026 Caldis. All rights reserved.\"; ObjectID = \"MI6-Tq-Nev\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "© 2017-2026 Caldis. Všechna práva vyhrazena."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "© 2017-2025 Caldis. Alle Rechte vorbehalten."
+            "value" : "© 2017-2026 Caldis. Alle Rechte vorbehalten."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "© 2017-2025 Caldis. All rights reserved."
+            "value" : "© 2017-2026 Caldis. All rights reserved."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "© 2017-2025 Caldis. All rights reserved."
+            "value" : "© 2017-2026 Caldis. All rights reserved."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "© 2017-2026 Caldis. Tous droits réservés."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "© 2017-2025 Caldis. All rights reserved."
+            "value" : "© 2017-2026 Caldis. All rights reserved."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "© 2017-2025 Caldis. All rights reserved."
+            "value" : "© 2017-2026 Caldis. All rights reserved."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "© 2017-2025 Caldis. Все права защищены."
+            "value" : "© 2017-2026 Caldis. Все права защищены."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "© 2017-2025 Caldis. Tüm hakları saklıdır."
+            "value" : "© 2017-2026 Caldis. Tüm hakları saklıdır."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "© 2017-2025 Caldis. Усі права захищено."
+            "value" : "© 2017-2026 Caldis. Усі права захищено."
           }
         }
       }
     },
     "mmw-45-VYt.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⌥ Option\"; ObjectID = \"mmw-45-VYt\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌥ Option"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5864,6 +6818,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⌥ Option"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⌥ Option"
           }
         },
@@ -5927,6 +6887,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Seçkin Kükrer(@LeaveNhA)\"; ObjectID = \"n8O-2V-Zob\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçkin Kükrer(@LeaveNhA)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5942,6 +6908,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Seçkin Kükrer(@LeaveNhA)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Seçkin Kükrer(@LeaveNhA)"
           }
         },
@@ -6005,6 +6977,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Smooth Scrolling\"; ObjectID = \"Ngq-sZ-qrp\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plynulé posouvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6021,6 +6999,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Smooth Scrolling"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Défilement doux"
           }
         },
         "ja" : {
@@ -6083,6 +7067,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Selim(@lima0)\"; ObjectID = \"NGY-5D-ZYm\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selim(@lima0)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6098,6 +7088,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Selim(@lima0)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Selim(@lima0)"
           }
         },
@@ -6160,6 +7156,12 @@
     "Nh1-iw-yGN.title" : {
       "comment" : "Class = \"NSButtonCell\"; title = \"Horizontal Smooth\"; ObjectID = \"Nh1-iw-yGN\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vodorovně"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6176,6 +7178,12 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Horizontal Smooth"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fluidité horizontale"
           }
         },
         "ja" : {
@@ -6238,6 +7246,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Simulate Trackpad (Beta)\"; ObjectID = \"p7Y-SJ-d6t\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Simulovat trackpad (Beta)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6254,6 +7268,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Simulate Trackpad (Beta)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Simuler Trackpad (Beta)"
           }
         },
         "ja" : {
@@ -6314,8 +7334,14 @@
     },
     "PIa-ES-2Sf.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⇧ Shift\"; ObjectID = \"PIa-ES-2Sf\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⇧ Shift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6331,6 +7357,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⇧ Shift"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⇧ Shift"
           }
         },
@@ -6393,6 +7425,12 @@
     "qjy-uD-jMy.title" : {
       "comment" : "Class = \"NSButtonCell\"; title = \"Vertical Reverse\"; ObjectID = \"qjy-uD-jMy\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Svisle"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6409,6 +7447,12 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Vertical Reverse"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inversion verticale"
           }
         },
         "ja" : {
@@ -6471,6 +7515,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; placeholderString = \"1-5\"; ObjectID = \"Qse-ik-rgy\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1-5"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6486,6 +7536,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "1-5"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "1-5"
           }
         },
@@ -6549,6 +7605,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"3.90\"; ObjectID = \"Qse-ik-rgy\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3.90"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6564,6 +7626,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "3.90"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "3.90"
           }
         },
@@ -6623,10 +7691,34 @@
         }
       }
     },
+    "Qx7-hF-cCG.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Including beta version\"; ObjectID = \"Qx7-hF-cCG\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zahrnout beta verze"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Including beta version"
+          }
+        }
+      }
+    },
     "R0d-21-g6W.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Running Applications\"; ObjectID = \"R0d-21-g6W\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spuštěné Aplikace"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6643,6 +7735,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Running Applications"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Applications en cours d’exécution"
           }
         },
         "ja" : {
@@ -6705,6 +7803,12 @@
       "comment" : "Class = \"NSViewController\"; title = \"About\"; ObjectID = \"RfV-Ow-3mF\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O aplikaci"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6721,6 +7825,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "About"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A propos"
           }
         },
         "ja" : {
@@ -6782,6 +7892,12 @@
     "Rgq-87-vjY.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Temporarily disable smooth scrolling to improve scrolling accuracy.\"; ObjectID = \"Rgq-87-vjY\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dočasně deaktivuje plynulé posouvání, aby se zlepšila přesnost posouvání."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6798,6 +7914,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Temporarily disable smooth scrolling to improve scrolling accuracy"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactiver temporairement le défilement doux pour améliorer la précision du défilement"
           }
         },
         "ja" : {
@@ -6860,6 +7982,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Action\"; ObjectID = \"sdr-Ih-rCr\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akce"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6875,6 +8003,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Action"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Action"
           }
         },
@@ -6936,8 +8070,14 @@
     },
     "Sfx-Rp-8QA.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⇧ Shift\"; ObjectID = \"Sfx-Rp-8QA\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⇧ Shift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6953,6 +8093,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⇧ Shift"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⇧ Shift"
           }
         },
@@ -7014,8 +8160,14 @@
     },
     "Sma-iA-YxQ.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⇧ Shift\"; ObjectID = \"Sma-iA-YxQ\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⇧ Shift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7031,6 +8183,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⇧ Shift"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⇧ Shift"
           }
         },
@@ -7094,6 +8252,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Joshua Park(@godly-devotion), OrcaXS(@OrcaXS) ...\"; ObjectID = \"SuH-MV-uUc\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joshua Park(@godly-devotion), OrcaXS(@OrcaXS) ..."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7109,6 +8273,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Joshua Park(@godly-devotion), OrcaXS(@OrcaXS) ..."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Joshua Park(@godly-devotion), OrcaXS(@OrcaXS) ..."
           }
         },
@@ -7172,6 +8342,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Other\"; ObjectID = \"SUM-eh-Lms\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostatní"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7188,6 +8364,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Other"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autre"
           }
         },
         "ja" : {
@@ -7250,6 +8432,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Not effective?\"; ObjectID = \"t00-ho-RN1\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nedaří se autorizace?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7266,6 +8454,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Not effective?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas effectif ?"
           }
         },
         "ja" : {
@@ -7328,6 +8522,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Reset to defaults\"; ObjectID = \"t2D-X2-Y6W\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obnovit výchozí nastavení"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7344,6 +8544,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Reset to defaults"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser tout"
           }
         },
         "ja" : {
@@ -7406,6 +8612,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Check Now\"; ObjectID = \"T9f-TL-GYj\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zkontrolovat nyní"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7422,6 +8634,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Check Now"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vérifier maintenant"
           }
         },
         "ja" : {
@@ -7484,6 +8702,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"No application is Special\"; ObjectID = \"ThS-Rm-st2\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žádná aplikace není speciální"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7500,6 +8724,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "No application is Special"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune application n’est Spéciale"
           }
         },
         "ja" : {
@@ -7562,6 +8792,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Woosuk Park(@readingsnail)\"; ObjectID = \"Tje-UR-0oP\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Woosuk Park(@readingsnail)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7577,6 +8813,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Woosuk Park(@readingsnail)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Woosuk Park(@readingsnail)"
           }
         },
@@ -7640,6 +8882,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Rendering this chart will affect scrolling performance. Close the window when not in use.\"; ObjectID = \"TUE-3v-CaJ\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazení tohoto grafu ovlivní výkon posouvání. Pokud jej nepoužíváte, zavřete okno."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7656,6 +8904,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Rendering this chart will affect scrolling performance. Close the window when not in use."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La génération de ce graphique impacte les performances du défilement. Fermez la fenêtre lorsque vous ne l’utilisez pas."
           }
         },
         "ja" : {
@@ -7718,6 +8972,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"No buttons are set up yet\"; ObjectID = \"tum-Lo-TC6\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zatím nejsou nastavena žádná tlačítka"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7734,6 +8994,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "No buttons are set up yet"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun bouton configuré actuellement"
           }
         },
         "ja" : {
@@ -7794,8 +9060,14 @@
     },
     "tXQ-GJ-k5M.title" : {
       "comment" : "Class = \"NSMenu\"; title = \"Running Applications\"; ObjectID = \"tXQ-GJ-k5M\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spuštěné aplikace"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7812,6 +9084,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Running Applications"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Applications en cours d’exécution"
           }
         },
         "ja" : {
@@ -7870,10 +9148,64 @@
         }
       }
     },
-    "UJ4-y2-HO8.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"⌥ Option\"; ObjectID = \"UJ4-y2-HO8\";",
+    "u2R-oy-a1c.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Buy me a coffee\"; ObjectID = \"u2R-oy-a1c\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kupte mi kávu"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Buy me a coffee"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payez-moi un café"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请我喝咖"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請我喝咖"
+          }
+        },
+        "zh-Hant-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請我飲咖"
+          }
+        },
+        "zh-Hant-TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請我喝咖"
+          }
+        }
+      }
+    },
+    "UJ4-y2-HO8.title" : {
+      "comment" : "Class = \"NSMenuItem\"; title = \"⌥ Option\"; ObjectID = \"UJ4-y2-HO8\";",
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌥ Option"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7889,6 +9221,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⌥ Option"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⌥ Option"
           }
         },
@@ -7951,6 +9289,12 @@
     "v26-RK-BtL.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"The allow list mode will make Mos only apply to apps within the application list.\"; ObjectID = \"v26-RK-BtL\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V režimu povolených aplikací bude Mos aktivní pouze pro aplikace v tomto seznamu"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7967,6 +9311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The allowlist mode will make Mos only apply to apps within the application list."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le mode liste autorisée fait que Mos ne s’applique qu’aux apps de la liste."
           }
         },
         "ja" : {
@@ -8029,6 +9379,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; placeholderString = \"0.1-100\"; ObjectID = \"vcQ-FZ-z8x\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0.1-100"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -8044,6 +9400,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "0.1-100"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "0.1-100"
           }
         },
@@ -8107,6 +9469,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"35.00\"; ObjectID = \"vcQ-FZ-z8x\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "35.00"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8122,6 +9490,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "35.00"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "35.00"
           }
         },
@@ -8185,6 +9559,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Check for updates:\"; ObjectID = \"vdI-K4-SBh\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualizace:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8201,6 +9581,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Check for updates:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vérifier mises à jour :"
           }
         },
         "ja" : {
@@ -8261,8 +9647,14 @@
     },
     "vFk-37-HRU.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Disabled\"; ObjectID = \"vFk-37-HRU\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vypnuto"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8279,6 +9671,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Disabled"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactivé"
           }
         },
         "ja" : {
@@ -8339,8 +9737,14 @@
     },
     "Vhz-Rn-lcU.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Disabled\"; ObjectID = \"Vhz-Rn-lcU\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vypnuto"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8357,6 +9761,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Disabled"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactivé"
           }
         },
         "ja" : {
@@ -8419,6 +9829,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Invert wheel direction\"; ObjectID = \"vjK-Rg-us9\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obrátit směr posouvání"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8435,6 +9851,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Invert wheel direction"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inverser le sens de la roue"
           }
         },
         "ja" : {
@@ -8496,6 +9918,12 @@
     "W2z-NX-9UO.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"May affect the scrolling behavior\"; ObjectID = \"W2z-NX-9UO\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Může ovlivnit chování posouvání."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8512,6 +9940,12 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "May affect the scrolling behavior."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peut affecter le comportement du défilement"
           }
         },
         "ja" : {
@@ -8574,6 +10008,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Inherit Global Settings\"; ObjectID = \"Wls-5g-cNZ\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Převzít globální nastavení"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8590,6 +10030,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Inherit Global Settings"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paramétrage Global Hérité"
           }
         },
         "ja" : {
@@ -8652,6 +10098,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"English\"; ObjectID = \"wrT-sk-Qjf\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angličtina"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8668,6 +10120,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "English"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anglais"
           }
         },
         "ja" : {
@@ -8730,6 +10188,12 @@
       "comment" : "Class = \"NSTableColumn\"; headerCell.title = \" Application\"; ObjectID = \"xfG-Cd-oIk\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikace"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8746,6 +10210,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : " Application"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Application"
           }
         },
         "ja" : {
@@ -8808,6 +10278,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Application Name\"; ObjectID = \"XjY-7g-GLL\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Název aplikace"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8824,6 +10300,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Application Name"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom de l’application"
           }
         },
         "ja" : {
@@ -8886,6 +10368,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Getting trouble ?\"; ObjectID = \"XMw-QE-lsq\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Máte potíže?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8902,6 +10390,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Getting trouble ?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un problème ?"
           }
         },
         "ja" : {
@@ -8964,6 +10458,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Waiting for you\"; ObjectID = \"xnQ-YR-qNR\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čekáme na vás"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8980,6 +10480,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Waiting for you"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous attend"
           }
         },
         "ja" : {
@@ -9017,6 +10523,12 @@
     "xoR-7p-3qj.title" : {
       "comment" : "Class = \"NSButtonCell\"; title = \"Launch Mos at Login\"; ObjectID = \"xoR-7p-3qj\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otevřít při přihlášení"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9033,6 +10545,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Launch on Login"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Démarrer avec la session"
           }
         },
         "ja" : {
@@ -9095,6 +10613,12 @@
       "comment" : "Class = \"NSButtonCell\"; title = \"Home Page\"; ObjectID = \"yDf-dn-Mcz\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domovská stránka"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9111,6 +10635,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Home Page"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Page d'accueil"
           }
         },
         "ja" : {
@@ -9172,6 +10702,12 @@
     "yFl-4N-WcD.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Your mouse is about to get a smoothest scrolling experience.\\nPick up your mouse, we just have a few thing that you need to check.\"; ObjectID = \"yFl-4N-WcD\";",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaše myš získá plynulejší posouvání.\nNež začnete, je třeba nastavit několik věcí."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9188,6 +10724,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your mouse is about to get a smoother scrolling experience.\nPick up your mouse, there are a few things you need to check."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre souris est sur le point de vous faire bénéficier d’une meilleure expérience de défilement. Munissez-vous d’elle, il y a d’abord quelques détails à vérifier."
           }
         },
         "ja" : {
@@ -9250,6 +10792,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Mos\"; ObjectID = \"YHn-dn-A4n\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mos"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9265,6 +10813,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Mos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Mos"
           }
         },
@@ -9324,10 +10878,34 @@
         }
       }
     },
+    "Yj9-j0-202.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Check on app start\"; ObjectID = \"Yj9-j0-202\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontrolovat při spuštění aplikace"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Check on app start"
+          }
+        }
+      }
+    },
     "Z59-tN-QjE.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Increase scrolling speed on long pages\"; ObjectID = \"Z59-tN-QjE\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zvýší rychlost posouvání na dlouhých stránkách"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9344,6 +10922,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Increase scrolling speed on long pages"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Augmenter la vitesse de défilement sur les longues pages"
           }
         },
         "ja" : {
@@ -9406,6 +10990,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Contributors\"; ObjectID = \"ZJY-Yg-Qev\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přispěvatelé"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9422,6 +11012,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Contributors"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contributeurs"
           }
         },
         "ja" : {
@@ -9484,6 +11080,12 @@
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Simplified Chinese\"; ObjectID = \"ZMc-lN-S4q\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zjednodušená čínština"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9500,6 +11102,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Simplified Chinese"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chinois simplifié"
           }
         },
         "ja" : {
@@ -9560,8 +11168,14 @@
     },
     "ZqO-Rs-CpS.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"⌘ Command\"; ObjectID = \"ZqO-Rs-CpS\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘ Command"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9577,6 +11191,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "⌘ Command"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "⌘ Command"
           }
         },
@@ -9632,6 +11252,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "⌘ Command"
+          }
+        }
+      }
+    },
+    "zTP-iu-A6h.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Disabled\"; ObjectID = \"zTP-iu-A6h\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vypnuto"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Disabled"
           }
         }
       }

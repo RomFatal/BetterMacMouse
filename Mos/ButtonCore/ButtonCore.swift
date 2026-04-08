@@ -9,17 +9,17 @@
 import Cocoa
 
 class ButtonCore {
-
+    
     // 单例
     static let shared = ButtonCore()
     init() { NSLog("Module initialized: ButtonCore") }
-
+    
     // 执行状态
     var isActive = false
-
+    
     // 拦截层
     var eventInterceptor: Interceptor?
-    
+
     // MARK: - Cursor Detection
     
     /// Get the current system cursor image size to detect cursor type
@@ -107,23 +107,34 @@ class ButtonCore {
         return false
     }
 
-    // MARK: - Event Handling
-    
+
+
     // 组合的按钮事件掩码
     let leftDown = CGEventMask(1 << CGEventType.leftMouseDown.rawValue)
     let rightDown = CGEventMask(1 << CGEventType.rightMouseDown.rawValue)
     let otherDown = CGEventMask(1 << CGEventType.otherMouseDown.rawValue)
-    let otherUp = CGEventMask(1 << CGEventType.otherMouseUp.rawValue)
     let otherDragged = CGEventMask(1 << CGEventType.otherMouseDragged.rawValue)
     let mouseMoved = CGEventMask(1 << CGEventType.mouseMoved.rawValue)
     let keyDown = CGEventMask(1 << CGEventType.keyDown.rawValue)
     let flagsChanged = CGEventMask(1 << CGEventType.flagsChanged.rawValue)
+    let otherUp = CGEventMask(1 << CGEventType.otherMouseUp.rawValue)
+    let keyUp = CGEventMask(1 << CGEventType.keyUp.rawValue)
     var eventMask: CGEventMask {
-        return leftDown | rightDown | otherDown | otherUp | otherDragged | mouseMoved | keyDown
+        return leftDown | rightDown | otherDown | otherUp | otherDragged | mouseMoved | keyDown | keyUp
     }
 
     // MARK: - 按钮事件处理
     let buttonEventCallBack: CGEventTapCallBack = { (proxy, type, event, refcon) in
+        // Tap 被系统禁用时, 清理活跃绑定状态并直接放行
+        if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
+            MosInputProcessor.shared.clearActiveBindings()
+            return Unmanaged.passUnretained(event)
+        }
+        // 跳过 Mos 合成事件, 避免 executeCustom 发出的事件被重复处理
+        if event.getIntegerValueField(.eventSourceUserData) == MosEventMarker.syntheticCustom {
+            return Unmanaged.passUnretained(event)
+        }
+
         let buttonNumber = event.getIntegerValueField(.mouseEventButtonNumber)
         let cgLocation = event.location
 
@@ -303,64 +314,56 @@ class ButtonCore {
             }
         }
 
-        // 获取当前应用的按钮绑定配置
-        let bindings = ButtonUtils.shared.getButtonBindings()
 
-        // 查找匹配的绑定
-        guard let binding = bindings.first(where: {
-            $0.triggerEvent.matches(event) && $0.isEnabled
-        }) else {
+        // 使用原始 flags 匹配绑定 (不注入虚拟修饰键, 保证匹配准确)
+        let mosEvent = MosInputEvent(fromCGEvent: event)
+        let result = MosInputProcessor.shared.process(mosEvent)
+        switch result {
+        case .consumed:
+            return nil
+        case .passthrough:
+            // 注入虚拟修饰键 flags 到 passthrough 的键盘事件
+            // 使长按鼠标侧键(绑定到修饰键) + 键盘按键 = 修饰键+按键
+            let activeFlags = MosInputProcessor.shared.activeModifierFlags
+            if activeFlags != 0 && (type == .keyDown || type == .keyUp) {
+                event.flags = CGEventFlags(rawValue: event.flags.rawValue | activeFlags)
+            }
             return Unmanaged.passUnretained(event)
         }
-
-        // 执行绑定的系统快捷键
-        ShortcutExecutor.shared.execute(named: binding.systemShortcutName)
-
-        // 消费事件(不再传递给系统)
-        return nil
     }
-
+    
     // MARK: - 启用和禁用
-
+    
     // 启用按钮监控
     func enable() {
         if !isActive {
             NSLog("ButtonCore enabled")
-            try? "ButtonCore enabled at \(Date())\n".write(toFile: "/tmp/mos_buttoncore_enabled.txt", atomically: false, encoding: .utf8)
             do {
                 eventInterceptor = try Interceptor(
                     event: eventMask,
                     handleBy: buttonEventCallBack,
                     listenOn: .cgAnnotatedSessionEventTap,
-                    placeAt: .headInsertEventTap,  // Changed to HEAD to intercept BEFORE apps see events
+                    placeAt: .tailAppendEventTap,
                     for: .defaultTap
                 )
                 isActive = true
-                try? "Interceptor created successfully\n".write(toFile: "/tmp/mos_buttoncore_enabled.txt", atomically: true, encoding: .utf8)
-
-                // Check if interceptor is actually running
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    let isRunning = ButtonCore.shared.eventInterceptor?.isRunning() ?? false
-                    NSLog("[ButtonCore] Interceptor running status: \(isRunning)")
-                    try? "Interceptor running: \(isRunning)\n".write(toFile: "/tmp/mos_buttoncore_status.txt", atomically: false, encoding: .utf8)
-                }
             } catch {
                 NSLog("ButtonCore: Failed to create interceptor: \(error)")
-                try? "ERROR: Failed to create interceptor: \(error)\n".write(toFile: "/tmp/mos_buttoncore_error.txt", atomically: false, encoding: .utf8)
             }
         }
     }
-
+    
     // 禁用按钮监控
     func disable() {
         if isActive {
             NSLog("ButtonCore disabled")
             eventInterceptor?.stop()
             eventInterceptor = nil
+            MosInputProcessor.shared.clearActiveBindings()
             isActive = false
         }
     }
-
+    
     // 切换状态
     func toggle() {
         isActive ? disable() : enable()
