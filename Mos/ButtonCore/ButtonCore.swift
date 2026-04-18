@@ -107,7 +107,9 @@ class ButtonCore {
 
     // 组合的按钮事件掩码
     let leftDown = CGEventMask(1 << CGEventType.leftMouseDown.rawValue)
+    let leftUp = CGEventMask(1 << CGEventType.leftMouseUp.rawValue)
     let rightDown = CGEventMask(1 << CGEventType.rightMouseDown.rawValue)
+    let rightUp = CGEventMask(1 << CGEventType.rightMouseUp.rawValue)
     let otherDown = CGEventMask(1 << CGEventType.otherMouseDown.rawValue)
     let otherDragged = CGEventMask(1 << CGEventType.otherMouseDragged.rawValue)
     let mouseMoved = CGEventMask(1 << CGEventType.mouseMoved.rawValue)
@@ -116,14 +118,14 @@ class ButtonCore {
     let otherUp = CGEventMask(1 << CGEventType.otherMouseUp.rawValue)
     let keyUp = CGEventMask(1 << CGEventType.keyUp.rawValue)
     var eventMask: CGEventMask {
-        return leftDown | rightDown | otherDown | otherUp | otherDragged | mouseMoved | keyDown | keyUp
+        return leftDown | leftUp | rightDown | rightUp | otherDown | otherUp | otherDragged | mouseMoved | keyDown | keyUp
     }
 
     // MARK: - 按钮事件处理
     let buttonEventCallBack: CGEventTapCallBack = { (proxy, type, event, refcon) in
         // Tap 被系统禁用时, 清理活跃绑定状态并直接放行
         if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
-            MosInputProcessor.shared.clearActiveBindings()
+            InputProcessor.shared.clearActiveBindings()
             return Unmanaged.passUnretained(event)
         }
         // 跳过 Mos 合成事件, 避免 executeCustom 发出的事件被重复处理
@@ -266,16 +268,25 @@ class ButtonCore {
         }
 
         // 使用原始 flags 匹配绑定 (不注入虚拟修饰键, 保证匹配准确)
-        let mosEvent = MosInputEvent(fromCGEvent: event)
-        let result = MosInputProcessor.shared.process(mosEvent)
+        let mosEvent = InputEvent(fromCGEvent: event)
+        let result = InputProcessor.shared.process(mosEvent)
         switch result {
         case .consumed:
             return nil
         case .passthrough:
-            // 注入虚拟修饰键 flags 到 passthrough 的键盘事件
-            // 使长按鼠标侧键(绑定到修饰键) + 键盘按键 = 修饰键+按键
-            let activeFlags = MosInputProcessor.shared.activeModifierFlags
-            if activeFlags != 0 && (type == .keyDown || type == .keyUp) {
+            // 注入虚拟修饰键 flags 到 passthrough 事件
+            // 使长按鼠标侧键(绑定到修饰键) + 键盘/鼠标输入 = 修饰键组合输入
+            let activeFlags = InputProcessor.shared.activeModifierFlags
+            let supportsVirtualModifiers =
+                type == .keyDown ||
+                type == .keyUp ||
+                type == .leftMouseDown ||
+                type == .leftMouseUp ||
+                type == .rightMouseDown ||
+                type == .rightMouseUp ||
+                type == .otherMouseDown ||
+                type == .otherMouseUp
+            if activeFlags != 0 && supportsVirtualModifiers {
                 event.flags = CGEventFlags(rawValue: event.flags.rawValue | activeFlags)
             }
             return Unmanaged.passUnretained(event)
@@ -287,7 +298,6 @@ class ButtonCore {
     // 启用按钮监控
     func enable() {
         if !isActive {
-            NSLog("ButtonCore enabled")
             do {
                 eventInterceptor = try Interceptor(
                     event: eventMask,
@@ -296,6 +306,9 @@ class ButtonCore {
                     placeAt: .tailAppendEventTap,
                     for: .defaultTap
                 )
+                eventInterceptor?.onRestart = {
+                    InputProcessor.shared.clearActiveBindings()
+                }
                 isActive = true
             } catch {
                 NSLog("ButtonCore: Failed to create interceptor: \(error)")
@@ -309,7 +322,7 @@ class ButtonCore {
             NSLog("ButtonCore disabled")
             eventInterceptor?.stop()
             eventInterceptor = nil
-            MosInputProcessor.shared.clearActiveBindings()
+            InputProcessor.shared.clearActiveBindings()
             isActive = false
         }
     }

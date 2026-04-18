@@ -20,16 +20,26 @@ enum KeyRecordingMode {
 }
 
 protocol KeyRecorderDelegate: AnyObject {
+    /// 录制开始回调
+    func onRecordingStarted(_ recorder: KeyRecorder)
+
     /// 录制完成回调
-    func onEventRecorded(_ recorder: KeyRecorder, didRecordEvent event: MosInputEvent, isDuplicate: Bool)
+    func onEventRecorded(_ recorder: KeyRecorder, didRecordEvent event: InputEvent, isDuplicate: Bool)
+
+    /// 录制结束回调
+    func onRecordingStopped(_ recorder: KeyRecorder, didRecord: Bool)
 
     /// 验证录制的事件是否为重复
-    func validateRecordedEvent(_ recorder: KeyRecorder, event: MosInputEvent) -> Bool
+    func validateRecordedEvent(_ recorder: KeyRecorder, event: InputEvent) -> Bool
 }
 
 /// 默认实现 (替代 @objc optional 语义)
 extension KeyRecorderDelegate {
-    func validateRecordedEvent(_ recorder: KeyRecorder, event: MosInputEvent) -> Bool {
+    func onRecordingStarted(_ recorder: KeyRecorder) {}
+
+    func onRecordingStopped(_ recorder: KeyRecorder, didRecord: Bool) {}
+
+    func validateRecordedEvent(_ recorder: KeyRecorder, event: InputEvent) -> Bool {
         return true
     }
 }
@@ -107,6 +117,7 @@ class KeyRecorder: NSObject {
         guard !isRecording else { return }
         isRecording = true
         recordingMode = mode
+        delegate?.onRecordingStarted(self)
         // Log
         NSLog("[EventRecorder] Starting in \(mode) mode")
         // 确保清理任何存在的录制界面
@@ -202,7 +213,7 @@ class KeyRecorder: NSObject {
                 queue: .main
             ) { [weak self] notification in
                 guard let self = self, self.isRecording, !self.isRecorded else { return }
-                guard let mosEvent = notification.userInfo?["event"] as? MosInputEvent else { return }
+                guard let mosEvent = notification.userInfo?["event"] as? InputEvent else { return }
                 guard mosEvent.phase == .down else { return }
                 NotificationCenter.default.post(
                     name: KeyRecorder.FINISH_NOTI_NAME,
@@ -326,7 +337,7 @@ class KeyRecorder: NSObject {
     }
 
     /// Adaptive 模式下的事件完成处理 (非修饰键/组合键录入时调用)
-    private func handleAdaptiveRecordedEvent(_ event: MosInputEvent) {
+    private func handleAdaptiveRecordedEvent(_ event: InputEvent) {
         cancelAdaptiveConfirmTimer()
         cancelHoldConfirmTimer()
         adaptiveState = .recorded
@@ -339,13 +350,13 @@ class KeyRecorder: NSObject {
         cancelHoldConfirmTimer()
         adaptiveState = .recorded
 
-        // 构造 MosInputEvent 并通过 FINISH 通知完成录制
-        let mosEvent = MosInputEvent(
+        // 构造 InputEvent 并通过 FINISH 通知完成录制
+        let mosEvent = InputEvent(
             type: .keyboard,
             code: extractPrimaryModifierCode(from: modifiers),
             modifiers: modifiers,
             phase: .down,
-            source: .hidPlusPlus,
+            source: .hidPP,
             device: nil
         )
         NotificationCenter.default.post(
@@ -422,14 +433,14 @@ class KeyRecorder: NSObject {
     @objc private func handleRecordedEvent(_ notification: NSNotification) {
         guard isRecording else { return }
 
-        // 统一转换为 MosInputEvent
-        // 注意: 先检查 MosInputEvent (value type), 再检查 CGEvent (CoreFoundation type)
+        // 统一转换为 InputEvent
+        // 注意: 先检查 InputEvent (value type), 再检查 CGEvent (CoreFoundation type)
         // CGEvent 的 as? 对 Any 总是成功, 所以必须后检查
-        let mosEvent: MosInputEvent
-        if let hidEvent = notification.object as? MosInputEvent {
+        let mosEvent: InputEvent
+        if let hidEvent = notification.object as? InputEvent {
             mosEvent = hidEvent
         } else if let cgEvent = notification.object, CFGetTypeID(cgEvent as CFTypeRef) == CGEvent.typeID {
-            mosEvent = MosInputEvent(fromCGEvent: cgEvent as! CGEvent)
+            mosEvent = InputEvent(fromCGEvent: cgEvent as! CGEvent)
         } else {
             NSLog("[EventRecorder] Unknown event type in notification")
             return
@@ -480,6 +491,7 @@ class KeyRecorder: NSObject {
     func stopRecording() {
         // Guard: 需要 Recording 才进行后续处理
         guard isRecording else { return }
+        let didRecord = isRecorded
         // Log
         NSLog("[EventRecorder] Stopping")
         // 隐藏录制界面
@@ -504,6 +516,7 @@ class KeyRecorder: NSObject {
             NotificationCenter.default.removeObserver(observer)
             hidEventObserver = nil
         }
+        delegate?.onRecordingStopped(self, didRecord: didRecord)
         // 录制结束: 恢复到只 divert 有绑定的按键
         LogitechHIDManager.shared.restoreDivertToBindings()
         // 重置状态 (添加延迟确保 Popover 结束动画完成, 避免多个 popover 重复出现导致卡住)
@@ -528,4 +541,3 @@ class KeyRecorder: NSObject {
         recordTimeoutTimer = nil
     }
 }
-
